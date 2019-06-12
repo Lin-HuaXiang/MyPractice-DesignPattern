@@ -1,8 +1,7 @@
-package com.designpattern.chapter01_SingleResponsibilityPrinciple.pojo.impl;
+package com.designpattern.chapter01_SingleResponsibilityPrinciple.biz.impl;
 
-import com.designpattern.chapter01_SingleResponsibilityPrinciple.biz.IUserBiz;
-import com.designpattern.chapter01_SingleResponsibilityPrinciple.bo.IUserBO;
-import com.designpattern.chapter01_SingleResponsibilityPrinciple.pojo.IUserInfo;
+import com.designpattern.chapter01_SingleResponsibilityPrinciple.biz.IUserBO;
+import com.designpattern.chapter01_SingleResponsibilityPrinciple.biz.IUserInfo;
 
 public class UserInfo implements IUserInfo {
 

@@ -1,7 +1,5 @@
 package com.designpattern.chapter01_SingleResponsibilityPrinciple.biz;
 
-import com.designpattern.chapter01_SingleResponsibilityPrinciple.bo.IUserBO;
-
 public interface IUserBiz {
 
     boolean changePassword(String password);

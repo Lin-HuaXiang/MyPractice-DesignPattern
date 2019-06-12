@@ -1,4 +1,4 @@
-package com.designpattern.chapter01_SingleResponsibilityPrinciple.bo;
+package com.designpattern.chapter01_SingleResponsibilityPrinciple.biz;
 
 public interface IUserBO {
 

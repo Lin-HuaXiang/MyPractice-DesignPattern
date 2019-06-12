@@ -1,12 +1,13 @@
 package com.designpattern.chapter01_SingleResponsibilityPrinciple.service.impl;
 
+
 import com.designpattern.chapter01_SingleResponsibilityPrinciple.biz.IUserBiz;
-import com.designpattern.chapter01_SingleResponsibilityPrinciple.bo.IUserBO;
-import com.designpattern.chapter01_SingleResponsibilityPrinciple.pojo.IUserInfo;
-import com.designpattern.chapter01_SingleResponsibilityPrinciple.pojo.impl.UserInfo;
+import com.designpattern.chapter01_SingleResponsibilityPrinciple.biz.IUserBO;
+import com.designpattern.chapter01_SingleResponsibilityPrinciple.biz.IUserInfo;
+import com.designpattern.chapter01_SingleResponsibilityPrinciple.biz.impl.UserInfo;
 import com.designpattern.chapter01_SingleResponsibilityPrinciple.service.IUserInfoService;
 
-public class UserInfoServiceImpl implements IUserInfoService {
+public class UserInfoService implements IUserInfoService {
 
 
     public void deleteUser() {
