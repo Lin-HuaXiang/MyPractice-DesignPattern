@@ -1,4 +1,4 @@
-package com.designpattern.chapter05_LawofDemeter.entity;
+package com.designpattern.chapter05_LawofDemeter.command;
 
 import java.util.ArrayList;
 import java.util.List;

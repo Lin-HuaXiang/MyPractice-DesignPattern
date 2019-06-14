@@ -8,8 +8,8 @@ import com.designpattern.chapter04_InterfaceSegregationPrinciple.entity.impl.Sea
 public class Client {
 
     public static void main(String[] args) {
-        IPettyGirl pettyGirl = new PettyGirl("嫣嫣");
-        AbstractSearcher searcher = new Searcher(pettyGirl);
-        searcher.show();
+//        IPettyGirl pettyGirl = new PettyGirl("嫣嫣");
+//        AbstractSearcher searcher = new Searcher(pettyGirl);
+//        searcher.show();
     }
 }
