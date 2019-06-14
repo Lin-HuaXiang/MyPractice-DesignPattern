@@ -1,8 +1,10 @@
 package com.designpattern.chapter04_InterfaceSegregationPrinciple.entity.impl;
 
+import com.designpattern.chapter04_InterfaceSegregationPrinciple.entity.IGoodBodyGril;
+import com.designpattern.chapter04_InterfaceSegregationPrinciple.entity.IGreatTemperamentGirl;
 import com.designpattern.chapter04_InterfaceSegregationPrinciple.entity.IPettyGirl;
 
-public class PettyGirl implements IPettyGirl {
+public class PettyGirl implements IGoodBodyGril, IGreatTemperamentGirl {  // IPettyGirl拆分为IGoodBodyGril,IGreatTemperamentGirl
 
     private String name;
 
