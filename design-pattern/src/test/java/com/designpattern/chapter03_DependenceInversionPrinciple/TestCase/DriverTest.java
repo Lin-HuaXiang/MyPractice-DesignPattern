@@ -2,10 +2,8 @@ package com.designpattern.chapter03_DependenceInversionPrinciple.TestCase;
 
 import com.designpattern.chapter03_DependenceInversionPrinciple.entity.ICar;
 import com.designpattern.chapter03_DependenceInversionPrinciple.entity.impl.Driver;
-import junit.framework.TestCase;
-import org.junit.Test;
 
-public class DriverTest extends TestCase {
+public class DriverTest {
 //
 //    Mockery context = new JUnit4Mockery();
 //
