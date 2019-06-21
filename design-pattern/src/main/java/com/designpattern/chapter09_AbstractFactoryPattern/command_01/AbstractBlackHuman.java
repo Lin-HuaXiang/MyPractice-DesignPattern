@@ -1,4 +1,4 @@
-package com.designpattern.chapter09_AbstractFactoryPattern.commond_01;
+package com.designpattern.chapter09_AbstractFactoryPattern.command_01;
 
 public abstract class AbstractBlackHuman implements Human {
 

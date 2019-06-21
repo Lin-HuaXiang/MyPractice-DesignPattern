@@ -1,6 +1,7 @@
-package com.designpattern.chapter09_AbstractFactoryPattern.commond_01;
+package com.designpattern.chapter09_AbstractFactoryPattern.command_01;
 
 public interface HumanFactory {
+
     // 制造一个黄色人种
     Human createYellowHuman();
 
@@ -8,5 +9,5 @@ public interface HumanFactory {
     Human createWhiteHuman();
 
     // 制造一个黑色人种
-    Human creatBlackHuman();
+    Human createBlackHuman();
 }

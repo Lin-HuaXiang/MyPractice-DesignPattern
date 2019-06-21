@@ -1,6 +1,6 @@
-package com.designpattern.chapter09_AbstractFactoryPattern.commond_01;
+package com.designpattern.chapter09_AbstractFactoryPattern.command_01;
 
-public abstract class AbstractYellowHuman {
+public abstract class AbstractYellowHuman implements Human {
 
     public void getColor() {
         System.out.println("黄色人种的皮肤颜色都是黄色的");
