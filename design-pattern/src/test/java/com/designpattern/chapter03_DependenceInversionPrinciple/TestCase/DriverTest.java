@@ -1,7 +1,5 @@
 package com.designpattern.chapter03_DependenceInversionPrinciple.TestCase;
 
-import com.designpattern.chapter03_DependenceInversionPrinciple.entity.ICar;
-import com.designpattern.chapter03_DependenceInversionPrinciple.entity.impl.Driver;
 
 public class DriverTest {
 //
