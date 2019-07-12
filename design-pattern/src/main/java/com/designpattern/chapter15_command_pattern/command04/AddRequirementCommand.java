@@ -1,4 +1,4 @@
-package com.designpattern.chapter15_command_pattern.command02;
+package com.designpattern.chapter15_command_pattern.command04;
 
 /**
  * @author linhuaxiang
