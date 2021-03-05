@@ -15,3 +15,6 @@ design-pattern-factory/.mvn/
 design-pattern-prototype/.mvn/
 design-pattern-singleton/.mvn/
 design-pattern-decorator/.mvn/
+design-pattern-facade/.mvn/wrapper/maven-wrapper.jar
+.vscode/settings.json
+design-pattern-facade/.mvn/
