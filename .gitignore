@@ -18,3 +18,5 @@ design-pattern-decorator/.mvn/
 design-pattern-facade/.mvn/wrapper/maven-wrapper.jar
 .vscode/settings.json
 design-pattern-facade/.mvn/
+design-pattern-flyweight/.mvn/wrapper/maven-wrapper.jar
+design-pattern-flyweight/.mvn/
