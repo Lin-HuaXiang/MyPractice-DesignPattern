@@ -1,0 +1,16 @@
+design-pattern/target/
+*.project
+*.classpath
+design-pattern/.settings/
+*/mvnw
+*.cmd
+design-pattern-adaptor/.mvn/
+*.jar
+design-pattern-abstract-factory/.mvn/
+design-pattern-bridge/.mvn/
+design-pattern-builder/.mvn/
+design-pattern-chain/.mvn/
+design-pattern-composite/.mvn/
+design-pattern-factory/.mvn/
+design-pattern-prototype/.mvn/
+design-pattern-singleton/.mvn/
