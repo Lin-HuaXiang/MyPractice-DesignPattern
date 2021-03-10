@@ -20,3 +20,6 @@ design-pattern-facade/.mvn/wrapper/maven-wrapper.jar
 design-pattern-facade/.mvn/
 design-pattern-flyweight/.mvn/wrapper/maven-wrapper.jar
 design-pattern-flyweight/.mvn/
+design-pattern-proxy/.mvn/
+design-pattern-command/.mvn/
+design-pattern-iterator/.mvn/
