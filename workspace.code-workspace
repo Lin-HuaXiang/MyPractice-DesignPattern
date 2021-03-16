@@ -1,0 +1,23 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"workbench.startupEditor": "newUntitledFile",
+		"java.errors.incompleteClasspath.severity": "ignore",
+		"workbench.colorTheme": "One Dark Pro",
+		"java.configuration.maven.userSettings": "D:\\soft\\apache-maven-3.6.3\\conf\\settings.xml",
+		"maven.executable.path": "D:\\soft\\apache-maven-3.6.3\\bin\\mvn",
+		"maven.terminal.useJavaHome": true,
+		"maven.terminal.customEnv": [
+			{
+				"environmentVariable": "JAVA_HOME",
+				"value": "C:\\Program Files\\AdoptOpenJDK\\jdk-11.0.9.101-hotspot"
+			}
+		],
+		"java.configuration.updateBuildConfiguration": "disabled",
+		"commentTranslate.targetLanguage": "zh-CN"
+	}
+}
