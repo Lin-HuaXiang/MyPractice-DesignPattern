@@ -24,6 +24,8 @@ design-pattern-proxy/.mvn/
 design-pattern-command/.mvn/
 design-pattern-iterator/.mvn/
 design-pattern-mediator/.mvn/
-design-pattern-memo/.mvn/wrapper/
+design-pattern-memo/.mvn/
 design-pattern-observer/.mvn/
 design-pattern-state/.mvn/
+design-pattern-strategy/.mvn/
+design-pattern-template/.mvn/
