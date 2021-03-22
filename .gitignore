@@ -29,3 +29,8 @@ design-pattern-observer/.mvn/
 design-pattern-state/.mvn/
 design-pattern-strategy/.mvn/
 design-pattern-template/.mvn/
+.idea/
+.vscode/
+.gitignore
+design-pattern-visitor/.mvn/
+design-pattern-index-analysis/.mvn/
