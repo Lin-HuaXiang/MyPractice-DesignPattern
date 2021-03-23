@@ -34,3 +34,4 @@ design-pattern-template/.mvn/
 .gitignore
 design-pattern-visitor/.mvn/
 design-pattern-index-analysis/.mvn/
+design-pattern-spider/.mvn/
