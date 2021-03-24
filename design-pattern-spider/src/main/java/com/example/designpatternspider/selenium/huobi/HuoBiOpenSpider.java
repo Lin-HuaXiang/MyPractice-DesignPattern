@@ -106,8 +106,7 @@ public class HuoBiOpenSpider {
             }
 
             // The heat is too high, need to adapt to the macd mac line drop
-            if (calcRsi9.compareTo(BigDecimal.valueOf(80)) > 0
-                && calcRsi14.compareTo(BigDecimal.valueOf(80)) > 0) {
+            if (calcRsi9.compareTo(BigDecimal.valueOf(80)) > 0 && calcRsi14.compareTo(BigDecimal.valueOf(80)) > 0) {
                 log.info("touch highest");
                 buyKong50Percent(i);
                 sellDuoAll(i);
@@ -120,11 +119,11 @@ public class HuoBiOpenSpider {
             }
 
             BigDecimal subtractPrice = price.subtract(lastPrice);
-            sum = sum.add(subtractPrice.multiply(BigDecimal.valueOf(duoCount))).add(subtractPrice
-                    .multiply(BigDecimal.valueOf(kongCount)).multiply(BigDecimal.valueOf(-1)));
+            sum = sum.add(subtractPrice.multiply(BigDecimal.valueOf(duoCount)))
+                    .add(subtractPrice.multiply(BigDecimal.valueOf(kongCount)).multiply(BigDecimal.valueOf(-1)));
 
-            log.info("[{}] [{}] [{},{}], [[{}], {}<-{}, {}<-{}, {}<-{}]", price, sum, duoCount,
-                    kongCount, calcRsi14, calcRsi9, subRsi9, calcRsi12, subRsi12, calcRsi72, subRsi72);
+            log.info("[{}] [{}] [{},{}], [[{}], {}<-{}, {}<-{}, {}<-{}]", price, sum, duoCount, kongCount, calcRsi14,
+                    calcRsi9, subRsi9, calcRsi12, subRsi12, calcRsi72, subRsi72);
 
             calendar = Calendar.getInstance();
             second = calendar.get(Calendar.SECOND);
@@ -206,27 +205,18 @@ public class HuoBiOpenSpider {
     }
 
     public static BigDecimal calcRsi(BigDecimal upSum, BigDecimal downSum, int size) {
-        // log.info("up sum {}", upSum);
-        // log.info("down sum {}", downSum);
         // up Sum
-        BigDecimal upRs = upSum.divide(BigDecimal.valueOf(size), 3, RoundingMode.UP);
-        // log.info("up sum avg {}", upRs);
+        BigDecimal upRs = upSum.divide(BigDecimal.valueOf(size), 6, RoundingMode.HALF_DOWN);
         // down Sum
-        BigDecimal downRs = downSum.divide(BigDecimal.valueOf(size), 3, RoundingMode.UP);
-        // log.info("down sum avg {}", downRs);
+        BigDecimal downRs = downSum.divide(BigDecimal.valueOf(size), 6, RoundingMode.HALF_DOWN);
         // RS
-        BigDecimal rs = upRs.divide(downRs, 3, RoundingMode.UP);
-        // log.info("RS {}", rs);
+        BigDecimal rs = upRs.divide(downRs, 6, RoundingMode.HALF_DOWN);
         // 1+RS
         BigDecimal onePlueRs = BigDecimal.valueOf(1).add(rs);
-        // log.info("1+RS {}", onePlueRs);
         // 100/(1+RS)
-        BigDecimal hundredDev = BigDecimal.valueOf(100).divide(onePlueRs, 3, RoundingMode.UP);
-        // log.info("100/(1+RS) {}", hundredDev);
+        BigDecimal hundredDev = BigDecimal.valueOf(100).divide(onePlueRs, 6, RoundingMode.HALF_DOWN);
         // 100-[100/(1+RS)]
-        BigDecimal res = BigDecimal.valueOf(100).subtract(hundredDev);
-        // log.info("100-[100/(1+RS)] {}", res);
-        return res;
+        return BigDecimal.valueOf(100).subtract(hundredDev);
     }
 
     public static WebDriver driverBuilderChromeHeadLess() {
@@ -254,8 +244,9 @@ public class HuoBiOpenSpider {
         duoRepository -= use;
         duoCount += use;
         // if (use > 0) {
-        //     double p = DataInfo.PRICE[i];
-        //     // sum = sum.subtract(BigDecimal.valueOf(p).multiply(BigDecimal.valueOf(use)));
+        // double p = DataInfo.PRICE[i];
+        // // sum =
+        // sum.subtract(BigDecimal.valueOf(p).multiply(BigDecimal.valueOf(use)));
         // }
     }
 
@@ -264,8 +255,8 @@ public class HuoBiOpenSpider {
         int use = duoCount;
         duoCount = 0;
         // if (use > 0) {
-        //     double p = DataInfo.PRICE[i];
-        //     // sum = sum.add(BigDecimal.valueOf(p).multiply(BigDecimal.valueOf(use)));
+        // double p = DataInfo.PRICE[i];
+        // // sum = sum.add(BigDecimal.valueOf(p).multiply(BigDecimal.valueOf(use)));
         // }
     }
 
@@ -274,8 +265,9 @@ public class HuoBiOpenSpider {
         kongRepository -= use;
         kongCount += use;
         // if (use > 0) {
-        //     double p = DataInfo.PRICE[i];
-        //     // sum = sum.subtract(BigDecimal.valueOf(p).multiply(BigDecimal.valueOf(use)));
+        // double p = DataInfo.PRICE[i];
+        // // sum =
+        // sum.subtract(BigDecimal.valueOf(p).multiply(BigDecimal.valueOf(use)));
         // }
     }
 
@@ -284,8 +276,8 @@ public class HuoBiOpenSpider {
         int use = kongCount;
         kongCount = 0;
         // if (use > 0) {
-        //     double p = DataInfo.PRICE[i];
-        //     // sum = sum.add(BigDecimal.valueOf(p).multiply(BigDecimal.valueOf(use)));
+        // double p = DataInfo.PRICE[i];
+        // // sum = sum.add(BigDecimal.valueOf(p).multiply(BigDecimal.valueOf(use)));
         // }
     }
 }

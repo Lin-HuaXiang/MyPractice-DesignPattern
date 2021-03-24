@@ -35,3 +35,8 @@ design-pattern-template/.mvn/
 design-pattern-visitor/.mvn/
 design-pattern-index-analysis/.mvn/
 design-pattern-spider/.mvn/
+*.factorypath
+*.prefs
+*.class
+design-pattern-spider/target/
+design-pattern-visitor/target/
