@@ -24,7 +24,7 @@ public class AnalysisUtil {
         work1();
     }
 
-    public static void work1() {
+    public static void work1() { 
         String sig = "";
         String lastSig = "";
         BigDecimal dev = BigDecimal.ZERO;
