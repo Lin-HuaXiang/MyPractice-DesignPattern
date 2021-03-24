@@ -11,6 +11,7 @@
 		"java.configuration.maven.userSettings": "D:\\soft\\apache-maven-3.6.3\\conf\\settings.xml",
 		"maven.executable.path": "D:\\soft\\apache-maven-3.6.3\\bin\\mvn",
 		"maven.terminal.useJavaHome": true,
+		
 		"maven.terminal.customEnv": [
 			{
 				"environmentVariable": "JAVA_HOME",
