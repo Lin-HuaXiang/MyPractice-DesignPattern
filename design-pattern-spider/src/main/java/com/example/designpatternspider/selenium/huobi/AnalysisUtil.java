@@ -123,39 +123,39 @@ public class AnalysisUtil {
         int use = duoRepository / 2;
         duoRepository -= use;
         duoCount += use;
-        if (use > 0) {
-            double p = DataInfo.PRICE[i];
-            // sum = sum.subtract(BigDecimal.valueOf(p).multiply(BigDecimal.valueOf(use)));
-        }
+        // if (use > 0) {
+        //     double p = DataInfo.PRICE[i];
+        //     // sum = sum.subtract(BigDecimal.valueOf(p).multiply(BigDecimal.valueOf(use)));
+        // }
     }
 
     public static void sellDuoAll(Integer i) {
         duoRepository += duoCount;
         int use = duoCount;
         duoCount = 0;
-        if (use > 0) {
-            double p = DataInfo.PRICE[i];
-            // sum = sum.add(BigDecimal.valueOf(p).multiply(BigDecimal.valueOf(use)));
-        }
+        // if (use > 0) {
+        //     double p = DataInfo.PRICE[i];
+        //     // sum = sum.add(BigDecimal.valueOf(p).multiply(BigDecimal.valueOf(use)));
+        // }
     }
 
     public static void buyKong50Percent(Integer i) {
         int use = kongRepository / 2;
         kongRepository -= use;
         kongCount += use;
-        if (use > 0) {
-            double p = DataInfo.PRICE[i];
-            // sum = sum.subtract(BigDecimal.valueOf(p).multiply(BigDecimal.valueOf(use)));
-        }
+        // if (use > 0) {
+        //     double p = DataInfo.PRICE[i];
+        //     // sum = sum.subtract(BigDecimal.valueOf(p).multiply(BigDecimal.valueOf(use)));
+        // }
     }
 
     public static void sellKongAll(Integer i) {
         kongRepository += kongCount;
         int use = kongCount;
         kongCount = 0;
-        if (use > 0) {
-            double p = DataInfo.PRICE[i];
-            // sum = sum.add(BigDecimal.valueOf(p).multiply(BigDecimal.valueOf(use)));
-        }
+        // if (use > 0) {
+        //     double p = DataInfo.PRICE[i];
+        //     // sum = sum.add(BigDecimal.valueOf(p).multiply(BigDecimal.valueOf(use)));
+        // }
     }
 }

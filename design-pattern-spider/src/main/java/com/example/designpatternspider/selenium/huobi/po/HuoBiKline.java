@@ -14,7 +14,7 @@ public class HuoBiKline {
 
     private String ch;
     private String status;
-    private long ts;
+    private Long ts;
     private List<Data> data;
 
     public void setCh(String ch) {

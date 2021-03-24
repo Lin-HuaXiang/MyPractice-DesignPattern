@@ -26,6 +26,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class HuoBiOpenSpider {
 
+    static Integer duoCount = 0;
+    static Integer kongCount = 0;
+    static Integer duoRepository = 10;
+    static Integer kongRepository = 10;
+    static BigDecimal sum = new BigDecimal("1000");
+
     public static void main(String[] args) throws Exception {
         WebDriver driver = driverBuilderChromeHeadLess();
         Actions action = new Actions(driver);
@@ -52,6 +58,23 @@ public class HuoBiOpenSpider {
         // BigDecimal lastCalcRsi12 = BigDecimal.ZERO;
         // BigDecimal lastCalcRsi72 = BigDecimal.ZERO;
 
+        Calendar calendar = Calendar.getInstance();
+        int second = calendar.get(Calendar.SECOND);
+        int minute = calendar.get(Calendar.MINUTE);
+        // int subMinute = 4 - minute % 5;
+        // int subSecond = 60 - second;
+        // int fix = subMinute * 60 + subSecond;
+        // log.info("time fix {}", fix);
+        // Thread.sleep((fix) * 1000);
+
+        log.info("time fix {}", 60 - second);
+        Thread.sleep((60 - second) * 1000);
+
+        BigDecimal subRsi9 = BigDecimal.ZERO;
+        BigDecimal subRsi12 = BigDecimal.ZERO;
+        BigDecimal subRsi72 = BigDecimal.ZERO;
+        BigDecimal lastPrice = BigDecimal.ZERO;
+
         for (int i = 0; i < n; i++) {
 
             sendRequest(driver, action);
@@ -62,10 +85,57 @@ public class HuoBiOpenSpider {
             BigDecimal calcRsi14 = calcRsi(kline72.getData().subList(0, 14));
             BigDecimal calcRsi72 = calcRsi(kline72.getData());
 
-            log.info("[{}], [[{}], {}, {}, {}]", kline72.getData().get(0).getClose(), calcRsi14, calcRsi9, calcRsi12, calcRsi72);
+            BigDecimal price = kline72.getData().get(0).getClose().setScale(3, RoundingMode.UP);
 
-            Calendar calendar = Calendar.getInstance();
-            int second = calendar.get(Calendar.SECOND);
+            if (i == 0) {
+                lastPrice = price;
+            }
+
+            if (subRsi9.compareTo(subRsi72) < 0 && calcRsi9.compareTo(calcRsi72) > 0
+                    && calcRsi12.compareTo(calcRsi72) > 0) {
+                log.info("up cross");
+                buyDuo50Percent(i);
+                sellKongAll(i);
+
+            }
+            if (subRsi9.compareTo(subRsi72) > 0 && calcRsi9.compareTo(calcRsi72) < 0
+                    && calcRsi12.compareTo(calcRsi72) < 0) {
+                log.info("down cross");
+                buyKong50Percent(i);
+                sellDuoAll(i);
+            }
+
+            // The heat is too high, need to adapt to the macd mac line drop
+            if (calcRsi9.compareTo(BigDecimal.valueOf(80)) > 0
+                && calcRsi14.compareTo(BigDecimal.valueOf(80)) > 0) {
+                log.info("touch highest");
+                buyKong50Percent(i);
+                sellDuoAll(i);
+            }
+
+            if (calcRsi9.compareTo(BigDecimal.valueOf(30)) < 0) {
+                log.info("touch lowest");
+                buyDuo50Percent(i);
+                sellDuoAll(i);
+            }
+
+            BigDecimal subtractPrice = price.subtract(lastPrice);
+            sum = sum.add(subtractPrice.multiply(BigDecimal.valueOf(duoCount))).add(subtractPrice
+                    .multiply(BigDecimal.valueOf(kongCount)).multiply(BigDecimal.valueOf(-1)));
+
+            log.info("[{}] [{}] [{},{}], [[{}], {}<-{}, {}<-{}, {}<-{}]", price, sum, duoCount,
+                    kongCount, calcRsi14, calcRsi9, subRsi9, calcRsi12, subRsi12, calcRsi72, subRsi72);
+
+            calendar = Calendar.getInstance();
+            second = calendar.get(Calendar.SECOND);
+            minute = calendar.get(Calendar.MINUTE);
+
+            if (minute % 5 == 0) {
+                subRsi9 = calcRsi9;
+                subRsi12 = calcRsi12;
+                subRsi72 = calcRsi72;
+            }
+            lastPrice = price;
             Thread.sleep((60 - second) * 1000);
 
         }
@@ -103,7 +173,7 @@ public class HuoBiOpenSpider {
         WebElement sendButton = SpiderUtil.getElementUntil(
                 By.xpath("//*[@id=\"app\"]/section/section/main/div/div[2]/div/form/div[4]/div/button"), driver, 5);
         action.click(sendButton).build().perform();
-        Thread.sleep(1000);
+        Thread.sleep(2000);
     }
 
     public static HuoBiKline getData(WebDriver driver) {
@@ -179,4 +249,43 @@ public class HuoBiOpenSpider {
         return format.format(new Date(time));
     }
 
+    public static void buyDuo50Percent(Integer i) {
+        int use = duoRepository / 2;
+        duoRepository -= use;
+        duoCount += use;
+        // if (use > 0) {
+        //     double p = DataInfo.PRICE[i];
+        //     // sum = sum.subtract(BigDecimal.valueOf(p).multiply(BigDecimal.valueOf(use)));
+        // }
+    }
+
+    public static void sellDuoAll(Integer i) {
+        duoRepository += duoCount;
+        int use = duoCount;
+        duoCount = 0;
+        // if (use > 0) {
+        //     double p = DataInfo.PRICE[i];
+        //     // sum = sum.add(BigDecimal.valueOf(p).multiply(BigDecimal.valueOf(use)));
+        // }
+    }
+
+    public static void buyKong50Percent(Integer i) {
+        int use = kongRepository / 2;
+        kongRepository -= use;
+        kongCount += use;
+        // if (use > 0) {
+        //     double p = DataInfo.PRICE[i];
+        //     // sum = sum.subtract(BigDecimal.valueOf(p).multiply(BigDecimal.valueOf(use)));
+        // }
+    }
+
+    public static void sellKongAll(Integer i) {
+        kongRepository += kongCount;
+        int use = kongCount;
+        kongCount = 0;
+        // if (use > 0) {
+        //     double p = DataInfo.PRICE[i];
+        //     // sum = sum.add(BigDecimal.valueOf(p).multiply(BigDecimal.valueOf(use)));
+        // }
+    }
 }

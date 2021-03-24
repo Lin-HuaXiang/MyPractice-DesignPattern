@@ -23,55 +23,5 @@ public class Data {
     private BigDecimal vol;
     private Integer count;
 
-    // public BigDecimal getOpen() {
-    //     return open;
-    // }
-    // public Long getId() {
-    //     return id;
-    // }
-    // public void setId(Long id) {
-    //     this.id = id;
-    // }
-    // public Integer getCount() {
-    //     return count;
-    // }
-    // public void setCount(Integer count) {
-    //     this.count = count;
-    // }
-    // public BigDecimal getVol() {
-    //     return vol;
-    // }
-    // public void setVol(BigDecimal vol) {
-    //     this.vol = vol;
-    // }
-    // public BigDecimal getAmount() {
-    //     return amount;
-    // }
-    // public void setAmount(BigDecimal amount) {
-    //     this.amount = amount;
-    // }
-    // public BigDecimal getHigh() {
-    //     return high;
-    // }
-    // public void setHigh(BigDecimal high) {
-    //     this.high = high;
-    // }
-    // public BigDecimal getLow() {
-    //     return low;
-    // }
-    // public void setLow(BigDecimal low) {
-    //     this.low = low;
-    // }
-    // public BigDecimal getClose() {
-    //     return close;
-    // }
-    // public void setClose(BigDecimal close) {
-    //     this.close = close;
-    // }
-    // public void setOpen(BigDecimal open) {
-    //     this.open = open;
-    // }
-
-   
 
 }
