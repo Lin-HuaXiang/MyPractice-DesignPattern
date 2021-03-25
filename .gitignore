@@ -40,3 +40,4 @@ design-pattern-spider/.mvn/
 *.class
 design-pattern-spider/target/
 design-pattern-visitor/target/
+design-pattern-index-analysis/target/

@@ -1,8 +1,9 @@
-package com.example.designpatternspider.selenium.huobi.strategy.futures.usdt.fil.trade;
+package com.example.designpatternspider.selenium.huobi.strategy.futures.usdt.fil;
 
 import java.math.BigDecimal;
 
 import com.example.designpatternspider.selenium.exception.MyException;
+import com.example.designpatternspider.selenium.huobi.strategy.trade.trade.ISwapTrade;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -13,7 +14,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class WebsiteFilSwapTrade implements IFilSwapTrade {
+public class WebsiteFilSwapTrade implements ISwapTrade {
 
     @Override
     public void openLong(ChromeDriver driver, WebDriverWait driverWait, Actions action) throws Exception {

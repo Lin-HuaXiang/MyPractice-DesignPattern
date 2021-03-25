@@ -1,14 +1,12 @@
-package com.example.designpatternspider.selenium.huobi.strategy.futures.usdt.fil.trade;
+package com.example.designpatternspider.selenium.huobi.strategy.trade.trade;
 
 import java.math.BigDecimal;
-
-import com.example.designpatternspider.selenium.exception.MyException;
 
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public interface IFilSwapTrade {
+public interface ISwapTrade {
 
     void openLong(ChromeDriver driver, WebDriverWait driverWait, Actions action) throws Exception;
 

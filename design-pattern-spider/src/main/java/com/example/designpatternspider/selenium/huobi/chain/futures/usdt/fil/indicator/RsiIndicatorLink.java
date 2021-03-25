@@ -3,7 +3,7 @@ package com.example.designpatternspider.selenium.huobi.chain.futures.usdt.fil.in
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import com.example.designpatternspider.selenium.huobi.api.HuoBiOpenSpider;
+import com.example.designpatternspider.selenium.huobi.api.HuobiOpenSpider;
 import com.example.designpatternspider.selenium.huobi.po.HuoBiKline;
 import com.example.designpatternspider.selenium.util.RsiIndicator;
 
@@ -38,16 +38,16 @@ public class RsiIndicatorLink extends IndicatorLink {
         
         Thread.sleep(1000);
         // url
-        HuoBiOpenSpider.getMain(driver);
+        HuobiOpenSpider.getMain(driver);
         // fil usdt
-        HuoBiOpenSpider.inputSymbol(driver, action, "filusdt");
+        HuobiOpenSpider.inputSymbol(driver, action, "filusdt");
         // 1min
-        HuoBiOpenSpider.inputPeriod(driver, action, "5min");
+        HuobiOpenSpider.inputPeriod(driver, action, "5min");
         // 72
-        HuoBiOpenSpider.inputSize(driver, action, "72");
+        HuobiOpenSpider.inputSize(driver, action, "72");
 
-        HuoBiOpenSpider.sendRequest(driver, action);
-        HuoBiKline kline72 = HuoBiOpenSpider.getData(driver);
+        HuobiOpenSpider.sendRequest(driver, action);
+        HuoBiKline kline72 = HuobiOpenSpider.getData(driver);
 
         // calculate rsi 9 12 72 14 value
         BigDecimal calcRsi9 = RsiIndicator.calcRsi(kline72.getData().subList(0, 9));

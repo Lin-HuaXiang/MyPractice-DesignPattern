@@ -17,6 +17,22 @@ public abstract class IndicatorLink {
     protected Boolean signalCloseLong = false;
     protected Boolean signalCloseShort = false;
 
+    public Boolean getSignalOpenLong() {
+        return signalOpenLong;
+    }
+
+    public Boolean getSignalOpenShort() {
+        return signalOpenShort;
+    }
+
+    public Boolean getSignalCloseLong() {
+        return signalCloseLong;
+    }
+
+    public Boolean getSignalCloseShort() {
+        return signalCloseShort;
+    }
+
     private IndicatorLink next;
 
     protected IndicatorLink(String windowHandle) {

@@ -97,11 +97,11 @@ public class HuoBiSpiderRSIUtil {
         driver.get("https://open.huobigroup.com/?name=kline");
 
         // filusdt
-        HuoBiOpenSpider.inputSymbol(driver, action, "filusdt");
+        HuobiOpenSpider.inputSymbol(driver, action, "filusdt");
         // 1min
-        HuoBiOpenSpider.inputPeriod(driver, action, "5min");
+        HuobiOpenSpider.inputPeriod(driver, action, "5min");
         // 72
-        HuoBiOpenSpider.inputSize(driver, action, "72");
+        HuobiOpenSpider.inputSize(driver, action, "72");
 
         int n = 1440;
 
@@ -136,13 +136,13 @@ public class HuoBiSpiderRSIUtil {
                 buyDuo = false;
                 buyKong = false;
 
-                HuoBiOpenSpider.sendRequest(driver, action);
-                HuoBiKline kline72 = HuoBiOpenSpider.getData(driver);
+                HuobiOpenSpider.sendRequest(driver, action);
+                HuoBiKline kline72 = HuobiOpenSpider.getData(driver);
 
-                BigDecimal calcRsi9 = HuoBiOpenSpider.calcRsi(kline72.getData().subList(0, 9));
-                BigDecimal calcRsi12 = HuoBiOpenSpider.calcRsi(kline72.getData().subList(0, 12));
-                BigDecimal calcRsi14 = HuoBiOpenSpider.calcRsi(kline72.getData().subList(0, 14));
-                BigDecimal calcRsi72 = HuoBiOpenSpider.calcRsi(kline72.getData());
+                BigDecimal calcRsi9 = HuobiOpenSpider.calcRsi(kline72.getData().subList(0, 9));
+                BigDecimal calcRsi12 = HuobiOpenSpider.calcRsi(kline72.getData().subList(0, 12));
+                BigDecimal calcRsi14 = HuobiOpenSpider.calcRsi(kline72.getData().subList(0, 14));
+                BigDecimal calcRsi72 = HuobiOpenSpider.calcRsi(kline72.getData());
 
                 BigDecimal price = kline72.getData().get(0).getClose().setScale(3, RoundingMode.UP);
 

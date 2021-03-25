@@ -1,14 +1,14 @@
-package com.example.designpatternspider.selenium.huobi.strategy.futures.usdt.fil.trade;
+package com.example.designpatternspider.selenium.huobi.strategy.futures.usdt.fil;
 
 import java.math.BigDecimal;
 
-import com.example.designpatternspider.selenium.exception.MyException;
+import com.example.designpatternspider.selenium.huobi.strategy.trade.trade.ISwapTrade;
 
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class MockFilSwapTrade implements IFilSwapTrade {
+public class MockFilSwapTrade implements ISwapTrade {
 
     private Integer duoCount = 0;
     private Integer kongCount = 0;

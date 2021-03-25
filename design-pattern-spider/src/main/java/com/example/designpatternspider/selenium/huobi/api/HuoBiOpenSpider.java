@@ -5,10 +5,8 @@ import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import com.alibaba.fastjson.JSON;
-import com.example.designpatternspider.selenium.huobi.po.Data;
 import com.example.designpatternspider.selenium.huobi.po.HuoBiKline;
 import com.example.designpatternspider.selenium.util.RsiIndicator;
 import com.example.designpatternspider.selenium.util.SpiderUtil;
@@ -20,12 +18,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
-import org.springframework.util.CollectionUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class HuoBiOpenSpider {
+public class HuobiOpenSpider {
 
     static Integer duoCount = 0;
     static Integer kongCount = 0;
