@@ -13,7 +13,7 @@ import java.util.List;
  * BAR=2×(DIFF－DEA)
  */
 
-public class MACD {
+public class MacdIndicator {
 
     /**
      * Calculate EMA,

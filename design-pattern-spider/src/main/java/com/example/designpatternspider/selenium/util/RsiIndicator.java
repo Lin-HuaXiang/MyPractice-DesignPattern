@@ -8,7 +8,7 @@ import com.example.designpatternspider.selenium.huobi.po.Data;
 
 import org.springframework.util.CollectionUtils;
 
-public class RSI {
+public class RsiIndicator {
 
     public static BigDecimal calcRsi(List<Data> dataList) {
         BigDecimal upSum = BigDecimal.ZERO;
@@ -39,9 +39,9 @@ public class RSI {
         // RS
         BigDecimal rs = upRs.divide(downRs);
         // 1+RS
-        BigDecimal onePlueRs = BigDecimal.valueOf(1).add(rs);
+        BigDecimal onePlusRs = BigDecimal.valueOf(1).add(rs);
         // 100/(1+RS)
-        BigDecimal hundredDev = BigDecimal.valueOf(100).divide(onePlueRs);
+        BigDecimal hundredDev = BigDecimal.valueOf(100).divide(onePlusRs);
         // 100-[100/(1+RS)]
         return BigDecimal.valueOf(100).subtract(hundredDev);
     }
