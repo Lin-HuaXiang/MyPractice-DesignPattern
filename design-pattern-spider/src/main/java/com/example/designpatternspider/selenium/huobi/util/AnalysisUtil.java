@@ -1,6 +1,8 @@
-package com.example.designpatternspider.selenium.huobi;
+package com.example.designpatternspider.selenium.huobi.util;
 
 import java.math.BigDecimal;
+
+import com.example.designpatternspider.selenium.huobi.po.DataInfo;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,6 +25,7 @@ public class AnalysisUtil {
  
         work1();
     }
+
 
     public static void work1() { 
         String sig = "";

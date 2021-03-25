@@ -1,4 +1,4 @@
-package com.example.designpatternspider.selenium.huobi;
+package com.example.designpatternspider.selenium.huobi.po;
 
 public class DataInfo {
 

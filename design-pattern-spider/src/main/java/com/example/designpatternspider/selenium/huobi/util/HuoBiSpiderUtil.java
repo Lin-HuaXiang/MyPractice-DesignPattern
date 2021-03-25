@@ -23,9 +23,9 @@ import lombok.extern.slf4j.Slf4j;
 public class HuoBiSpiderUtil {
 
     public static void main(String[] args) throws InterruptedException {
-        // 配置驱动
+        // Configuration driver 
         System.setProperty("webdriver.chrome.driver", "C:\\chromedriver\\chromedriver.exe");
-        // 创建ChromeDriver对象
+        // Create ChromeDriver object 
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--start-maximized");
         options.addArguments("disable-infobars");
@@ -35,11 +35,11 @@ public class HuoBiSpiderUtil {
         WebDriverWait driverWait = new WebDriverWait(driver, 10);
         Actions action = new Actions(driver);
 
-        // 选择货币
+        // Choose currency 
         String currency = "FIL-USDT";
         // String currency = "CHZ-USDT";
 
-        // 打开网站
+        // Open website 
         driver.get("https://futures.huobi.be/zh-cn/linear_swap/exchange/#contract_code=" + currency + "&type=isolated");
 
         log.info("login prepare {}", 10 * 1000);
@@ -73,13 +73,13 @@ public class HuoBiSpiderUtil {
                 driver.get("https://futures.huobi.be/zh-cn/linear_swap/exchange/#contract_code=" + currency + "&type=isolated");
             }
             try {
-                // 关闭广告
+                // Close ad 
                 closeAd(driver, driverWait, action);
-                // 打开专业版
+                // Open the professional panel 
                 openProfession(driver, driverWait, action);
-                // 打开分钟线
+                // Turn on the minute line
                 openMinute(driver, driverWait, action);
-                // 打开MACD线
+                // Open the MACD line 
                 openMACD(driver, driverWait, action);
                 driver.switchTo().defaultContent();
                 // price charge
@@ -91,7 +91,7 @@ public class HuoBiSpiderUtil {
                 WebElement eIframe = new WebDriverWait(driver, 30).until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#kChartProfession > iframe")));
                 driver.switchTo().frame(eIframe);
 
-                // 鼠标移动到面板，避免数据没有刷新
+                // Move the mouse to the panel to avoid data not refreshed 
                 String cssMacdBarLeft = "/html/body/div[1]/div[1]/div/div[1]/div[2]/div[2]/div/div[2]/div[1]";
                 WebElement eMacdBarLeft = driver.findElement(By.xpath(cssMacdBarLeft));
                 action.click(eMacdBarLeft).build().perform();
