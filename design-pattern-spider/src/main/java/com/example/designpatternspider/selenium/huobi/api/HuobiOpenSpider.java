@@ -144,7 +144,7 @@ public class HuobiOpenSpider {
 
     public static void getMain(WebDriver driver) {
         // url 检测
-        if (driver.getCurrentUrl().indexOf("KLINE_URL") < 0) {
+        if (driver.getCurrentUrl().indexOf(API_URL) < 0) {
             driver.get(API_URL);
         }
     }
@@ -185,7 +185,7 @@ public class HuobiOpenSpider {
         WebElement sendButton = SpiderUtil.getElementUntil(
                 By.xpath("//*[@id=\"app\"]/section/section/main/div/div[2]/div/form/div[4]/div/button"), driver, 5);
         action.click(sendButton).build().perform();
-        Thread.sleep(2000);
+        Thread.sleep(4000);
     }
 
     public static HuoBiKline getData(WebDriver driver) {
@@ -203,12 +203,12 @@ public class HuobiOpenSpider {
         // headless open driver
         ChromeOptions chromeOptions = new ChromeOptions();
         // chromeOptions.setBinary("/opt/google/chrome/google-chrome");
-        chromeOptions.addArguments("--headless");
-        chromeOptions.addArguments("--disable-gpu");
-        chromeOptions.addArguments("--no-sandbox");
-        chromeOptions.addArguments("--disable-infobars");
-        // chromeOptions.addArguments("window-size=1920,1080");
-        chromeOptions.addArguments("window-size=1024,768");
+        // chromeOptions.addArguments("--headless");
+        chromeOptions.addArguments("disable-gpu");
+        chromeOptions.addArguments("no-sandbox");
+        chromeOptions.addArguments("disable-infobars");
+        chromeOptions.addArguments("window-size=1920,720");
+        // chromeOptions.addArguments("window-size=1024,768");
         return new ChromeDriver(chromeOptions);
     }
 

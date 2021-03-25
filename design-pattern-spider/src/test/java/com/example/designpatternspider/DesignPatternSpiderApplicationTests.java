@@ -9,7 +9,6 @@ import java.util.Set;
 import com.example.designpatternspider.selenium.huobi.api.HuobiLinearSwapSpider;
 import com.example.designpatternspider.selenium.huobi.api.HuobiOpenSpider;
 import com.example.designpatternspider.selenium.huobi.chain.futures.usdt.fil.indicator.IndicatorLink;
-import com.example.designpatternspider.selenium.huobi.chain.futures.usdt.fil.indicator.MacdIndicatorLink;
 import com.example.designpatternspider.selenium.huobi.chain.futures.usdt.fil.indicator.MacdWebsiteIndicatorLink;
 import com.example.designpatternspider.selenium.huobi.chain.futures.usdt.fil.indicator.RsiIndicatorLink;
 import com.example.designpatternspider.selenium.huobi.chain.futures.usdt.fil.indicator.TradeSignal;
@@ -39,6 +38,7 @@ class DesignPatternSpiderApplicationTests {
 
 	@BeforeEach
 	public void before() {
+
 		driver = HuobiOpenSpider.driverBuilderChromeHeadLess();
 		action = new Actions(driver);
 		driverWait = new WebDriverWait(driver, 30);

@@ -41,3 +41,4 @@ design-pattern-spider/.mvn/
 design-pattern-spider/target/
 design-pattern-visitor/target/
 design-pattern-index-analysis/target/
+*.iml

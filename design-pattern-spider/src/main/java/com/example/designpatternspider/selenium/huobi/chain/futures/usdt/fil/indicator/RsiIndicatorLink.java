@@ -78,14 +78,14 @@ public class RsiIndicatorLink extends IndicatorLink {
         }
 
         // The heat is too high, need to adapt to the macd mac line drop
-        if (calcRsi9.divide(calcRsi72, 2, RoundingMode.HALF_DOWN).compareTo(BigDecimal.valueOf(1.15)) >= 0) {
+        if (calcRsi9.divide(calcRsi72, 2, RoundingMode.HALF_DOWN).compareTo(BigDecimal.valueOf(1.45)) >= 0) {
             log.info("touch highest");
             signalOpenShort = true;
             signalCloseLong = true;
         }
 
         // The heat is too high, need to adjust to MACD line drop
-        if (calcRsi9.divide(calcRsi72, 2, RoundingMode.HALF_DOWN).compareTo(BigDecimal.valueOf(0.95)) <= 0) {
+        if (calcRsi9.divide(calcRsi72, 2, RoundingMode.HALF_DOWN).compareTo(BigDecimal.valueOf(0.55)) <= 0) {
             log.info("touch lowest");
             signalCloseShort = true;
             signalCloseLong = true;

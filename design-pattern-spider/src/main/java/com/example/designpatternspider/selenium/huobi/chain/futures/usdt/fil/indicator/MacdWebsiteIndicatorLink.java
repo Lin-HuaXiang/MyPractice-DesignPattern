@@ -28,8 +28,9 @@ public class MacdWebsiteIndicatorLink extends IndicatorLink {
 
     @Override
     public void calc(WebDriver driver, WebDriverWait driverWait, Actions action) throws Exception {
+        driver.switchTo().window(windowHandle);
         // TODO Auto-generated method stub
-        // Close ad
+        // // Close ad
         HuobiLinearSwapSpider.closeAd(driver, driverWait, action);
         // Open the professional panel
         HuobiLinearSwapSpider.openProfession(driver, driverWait, action);
@@ -129,7 +130,7 @@ public class MacdWebsiteIndicatorLink extends IndicatorLink {
         }
 
         // 先打印
-        log.info("{}, {}, {}, {}, {}, {}", price, dif, macd);
+        log.info("{}, {}, {}", price, dif, macd);
         lastPrice = price;
         lastDif = dif;
         lastMacd = macd;

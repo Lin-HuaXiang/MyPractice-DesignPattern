@@ -164,7 +164,7 @@ public class HuoBiSpiderRSIUtil {
                     log.info("down cross");
                     buyKong = true;
                     sellDuo = true;
-                } 
+                }
 
                 // The heat is too high, need to adapt to the macd mac line drop
                 if (calcRsi9.divide(calcRsi72, 2, RoundingMode.HALF_DOWN).compareTo(BigDecimal.valueOf(1.45)) >= 0) {

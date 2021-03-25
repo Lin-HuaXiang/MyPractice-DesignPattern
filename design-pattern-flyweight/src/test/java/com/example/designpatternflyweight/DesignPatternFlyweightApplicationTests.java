@@ -1,12 +1,10 @@
 package com.example.designpatternflyweight;
 
 import com.alibaba.fastjson.JSON;
-import com.example.designpatternflyweight.controller.ActivityController;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import jdk.internal.org.jline.utils.Log;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
