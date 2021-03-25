@@ -7,7 +7,7 @@ import com.example.designpatternspider.selenium.huobi.api.HuobiOpenSpider;
 import com.example.designpatternspider.selenium.huobi.po.HuoBiKline;
 import com.example.designpatternspider.selenium.util.RsiIndicator;
 
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -32,7 +32,7 @@ public class RsiIndicatorLink extends IndicatorLink {
     }
 
     @Override
-    public void calc(ChromeDriver driver, WebDriverWait driverWait, Actions action) throws Exception {
+    public void calc(WebDriver driver, WebDriverWait driverWait, Actions action) throws Exception {
 
         driver.switchTo().window(windowHandle);
         
@@ -99,9 +99,6 @@ public class RsiIndicatorLink extends IndicatorLink {
         latRsi12 = calcRsi12;
         lastRsi72 = calcRsi72;
 
-
-        // reset signal
-        reset();
     }
 
 }

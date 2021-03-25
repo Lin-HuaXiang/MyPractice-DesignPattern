@@ -1,13 +1,13 @@
-package com.example.designpatternspider.selenium.huobi.strategy.futures.usdt.fil;
+package com.example.designpatternspider.selenium.huobi.strategy.trade.trade;
 
 import java.math.BigDecimal;
 
 import com.example.designpatternspider.selenium.exception.MyException;
-import com.example.designpatternspider.selenium.huobi.strategy.trade.trade.ISwapTrade;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 

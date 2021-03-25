@@ -1,6 +1,6 @@
 package com.example.designpatternspider.selenium.huobi.chain.futures.usdt.fil.indicator;
 
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -55,14 +55,14 @@ public abstract class IndicatorLink {
         signalCloseShort = false;
     }
 
-    protected abstract void calc(ChromeDriver driver, WebDriverWait driverWait, Actions action) throws Exception;
+    protected abstract void calc(WebDriver driver, WebDriverWait driverWait, Actions action) throws Exception;
 
     public IndicatorLink appendLink(IndicatorLink next) {
         this.next = next;
         return this;
     }
 
-    public void work(ChromeDriver driver, WebDriverWait driverWait, Actions action) throws Exception {
+    public void work(WebDriver driver, WebDriverWait driverWait, Actions action) throws Exception {
         // calc current
         calc(driver, driverWait, action);
         // calc next

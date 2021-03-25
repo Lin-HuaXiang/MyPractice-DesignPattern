@@ -33,15 +33,15 @@ public class RsiIndicator {
 
     public static BigDecimal calcRsi(BigDecimal upSum, BigDecimal downSum, int size) {
         // up Sum
-        BigDecimal upRs = upSum.divide(BigDecimal.valueOf(size));
+        BigDecimal upRs = upSum.divide(BigDecimal.valueOf(size), 6, RoundingMode.HALF_DOWN);
         // down Sum
-        BigDecimal downRs = downSum.divide(BigDecimal.valueOf(size));
+        BigDecimal downRs = downSum.divide(BigDecimal.valueOf(size), 6, RoundingMode.HALF_DOWN);
         // RS
-        BigDecimal rs = upRs.divide(downRs);
+        BigDecimal rs = upRs.divide(downRs, 6, RoundingMode.HALF_DOWN);
         // 1+RS
         BigDecimal onePlusRs = BigDecimal.valueOf(1).add(rs);
         // 100/(1+RS)
-        BigDecimal hundredDev = BigDecimal.valueOf(100).divide(onePlusRs);
+        BigDecimal hundredDev = BigDecimal.valueOf(100).divide(onePlusRs, 6, RoundingMode.HALF_DOWN);
         // 100-[100/(1+RS)]
         return BigDecimal.valueOf(100).subtract(hundredDev);
     }

@@ -1,12 +1,10 @@
 package com.example.designpatternspider.selenium.huobi.observer.event;
 
 import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.Map;
 
 import com.example.designpatternspider.selenium.huobi.strategy.trade.trade.ISwapTrade;
 
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -26,7 +24,7 @@ public class EventManager {
         listeners.remove(eventType);
     }
 
-    public void notify(EventType eventType, ISwapTrade swapTrade, ChromeDriver driver, WebDriverWait driverWait, Actions action)
+    public void notify(EventType eventType, ISwapTrade swapTrade, WebDriver driver, WebDriverWait driverWait, Actions action)
             throws Exception {
         SwapEvent swapEvent = listeners.get(eventType);
         swapEvent.doEvent(swapTrade, driver, driverWait, action);

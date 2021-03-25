@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 import com.example.designpatternspider.selenium.huobi.api.HuobiLinearSwapSpider;
 
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -22,12 +22,12 @@ public class MacdWebsiteIndicatorLink extends IndicatorLink {
     private BigDecimal lastSubDif = BigDecimal.ZERO;
     private BigDecimal lastPrice = BigDecimal.ZERO;
 
-    protected MacdWebsiteIndicatorLink(String windowHandle) {
+    public MacdWebsiteIndicatorLink(String windowHandle) {
         super(windowHandle);
     }
 
     @Override
-    public void calc(ChromeDriver driver, WebDriverWait driverWait, Actions action) throws Exception {
+    public void calc(WebDriver driver, WebDriverWait driverWait, Actions action) throws Exception {
         // TODO Auto-generated method stub
         // Close ad
         HuobiLinearSwapSpider.closeAd(driver, driverWait, action);
@@ -127,6 +127,14 @@ public class MacdWebsiteIndicatorLink extends IndicatorLink {
                 signalOpenShort = true;
             }
         }
+
+        // 先打印
+        log.info("{}, {}, {}, {}, {}, {}", price, dif, macd);
+        lastPrice = price;
+        lastDif = dif;
+        lastMacd = macd;
+        lastSubDif = subDif;
+        lastSubMacd = subMacd;
     }
 
 }

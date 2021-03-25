@@ -1,6 +1,18 @@
 package com.example.designpatternspider.selenium.huobi.util;
 
-import lombok.extern.slf4j.Slf4j;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+import com.example.designpatternspider.selenium.huobi.api.HuobiOpenSpider;
+import com.example.designpatternspider.selenium.huobi.po.HuoBiKline;
+import com.example.designpatternspider.selenium.util.RsiIndicator;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -11,17 +23,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
-import com.example.designpatternspider.selenium.huobi.HuoBiOpenSpider;
-import com.example.designpatternspider.selenium.huobi.po.HuoBiKline;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class HuoBiSpiderRSIUtil {
@@ -139,10 +141,10 @@ public class HuoBiSpiderRSIUtil {
                 HuobiOpenSpider.sendRequest(driver, action);
                 HuoBiKline kline72 = HuobiOpenSpider.getData(driver);
 
-                BigDecimal calcRsi9 = HuobiOpenSpider.calcRsi(kline72.getData().subList(0, 9));
-                BigDecimal calcRsi12 = HuobiOpenSpider.calcRsi(kline72.getData().subList(0, 12));
-                BigDecimal calcRsi14 = HuobiOpenSpider.calcRsi(kline72.getData().subList(0, 14));
-                BigDecimal calcRsi72 = HuobiOpenSpider.calcRsi(kline72.getData());
+                BigDecimal calcRsi9 = RsiIndicator.calcRsi(kline72.getData().subList(0, 9));
+                BigDecimal calcRsi12 = RsiIndicator.calcRsi(kline72.getData().subList(0, 12));
+                BigDecimal calcRsi14 = RsiIndicator.calcRsi(kline72.getData().subList(0, 14));
+                BigDecimal calcRsi72 = RsiIndicator.calcRsi(kline72.getData());
 
                 BigDecimal price = kline72.getData().get(0).getClose().setScale(3, RoundingMode.UP);
 

@@ -8,7 +8,7 @@ import com.example.designpatternspider.selenium.huobi.observer.futrues.usdt.fil.
 import com.example.designpatternspider.selenium.huobi.observer.futrues.usdt.fil.OpenShortSwapEvent;
 import com.example.designpatternspider.selenium.huobi.strategy.trade.trade.ISwapTrade;
 
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -27,7 +27,7 @@ public class SwapService {
         this.swapTrade = swapTrade;
     }
 
-    public void judge(IndicatorLink indicatorLink, ChromeDriver driver, WebDriverWait driverWait, Actions action) throws Exception {
+    public void notify(IndicatorLink indicatorLink, WebDriver driver, WebDriverWait driverWait, Actions action) throws Exception {
         if (Boolean.TRUE.equals(indicatorLink.getSignalOpenLong())) {
             eventManager.notify(EventType.OPEN_LONG, swapTrade, driver, driverWait, action);
         }

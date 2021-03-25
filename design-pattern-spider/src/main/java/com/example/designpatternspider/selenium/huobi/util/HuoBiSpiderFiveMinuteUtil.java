@@ -1,6 +1,10 @@
 package com.example.designpatternspider.selenium.huobi.util;
 
-import lombok.extern.slf4j.Slf4j;
+import java.math.BigDecimal;
+import java.util.Calendar;
+
+import com.example.designpatternspider.selenium.huobi.api.HuobiLinearSwapSpider;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -10,11 +14,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class HuoBiSpiderFiveMinuteUtil {
@@ -71,13 +71,13 @@ public class HuoBiSpiderFiveMinuteUtil {
             }
             try {
                 // 关闭广告
-                closeAd(driver, driverWait, action);
+                HuobiLinearSwapSpider.closeAd(driver, driverWait, action);
                 // 打开专业版
-                openProfession(driver, driverWait, action);
+                HuobiLinearSwapSpider.openProfession(driver, driverWait, action);
                 // 打开分钟线
-                openMinute(driver, driverWait, action);
+                HuobiLinearSwapSpider.openMinute(driver, driverWait, action);
                 // 打开MACD线
-                openMACD(driver, driverWait, action);
+                HuobiLinearSwapSpider.openMACD(driver, driverWait, action);
                 
                 driver.switchTo().defaultContent();
                 // price charge

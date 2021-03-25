@@ -30,13 +30,13 @@ public class HuobiOpenSpider {
     static Integer kongRepository = 10;
     static BigDecimal sum = new BigDecimal("1000");
 
-    private static final String KLINE_URL = "https://open.huobigroup.com/?name=kline";
+    public static final String API_URL = "https://open.huobigroup.com/?name=kline";
 
     public static void main(String[] args) throws Exception {
         WebDriver driver = driverBuilderChromeHeadLess();
         Actions action = new Actions(driver);
 
-        SpiderUtil.requestData("https://open.huobigroup.com/?name=kline", driver);
+        SpiderUtil.requestData(API_URL, driver);
 
         // 一)将14天上升的数目相加，除以14，上例中总共上升16除以14得1.143(精确到小数点后三位)；
         // (二)将14天下跌的数目相加，除以14，上例中总共下跌23除以14得1.643(精确到小数点后三位)；
@@ -145,7 +145,7 @@ public class HuobiOpenSpider {
     public static void getMain(WebDriver driver) {
         // url 检测
         if (driver.getCurrentUrl().indexOf("KLINE_URL") < 0) {
-            driver.get(KLINE_URL);
+            driver.get(API_URL);
         }
     }
 
@@ -203,7 +203,7 @@ public class HuobiOpenSpider {
         // headless open driver
         ChromeOptions chromeOptions = new ChromeOptions();
         // chromeOptions.setBinary("/opt/google/chrome/google-chrome");
-        chromeOptions.addArguments("--headless");
+        // chromeOptions.addArguments("--headless");
         chromeOptions.addArguments("--disable-gpu");
         chromeOptions.addArguments("--no-sandbox");
         chromeOptions.addArguments("--disable-infobars");

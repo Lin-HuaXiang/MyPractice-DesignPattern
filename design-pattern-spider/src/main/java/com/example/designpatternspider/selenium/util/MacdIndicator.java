@@ -102,7 +102,7 @@ public class MacdIndicator {
         dea = getEXPMABigDecimal(diffList, midPeriod);
         macdData.put("DIF", dif);
         macdData.put("DEA", dea);
-        macdData.put("MACD", (dif.subtract(dea).multiply(BigDecimal.valueOf(2));
+        macdData.put("MACD", dif.subtract(dea).multiply(BigDecimal.valueOf(2)));
         return macdData;
     }
 

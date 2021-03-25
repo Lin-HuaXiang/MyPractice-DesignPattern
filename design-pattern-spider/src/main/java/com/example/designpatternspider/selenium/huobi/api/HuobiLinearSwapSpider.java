@@ -8,7 +8,6 @@ import java.util.Optional;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -18,7 +17,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class HuobiLinearSwapSpider {
 
-    public static void openProfession(ChromeDriver driver, WebDriverWait driverWait, Actions action)
+    public static final String KLINE_URL = "https://futures.huobi.be/zh-cn/linear_swap/exchange/#contract_code=FIL-USDT&type=isolated";
+
+    public static void openProfession(WebDriver driver, WebDriverWait driverWait, Actions action)
             throws InterruptedException {
         String selectMinute = "#chartOuterWrap > div.k-chart-head.content-box.border-split > div.switch-operate > h2.btn-selected:nth-child(2)";
         WebElement eSelect = null;
