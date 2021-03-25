@@ -67,7 +67,7 @@ public abstract class IndicatorLink {
         // append signal
         appendSignal(tradeSignal);
         // calc next
-        log.info("{} {} {} {}", signalOpenLong, signalOpenShort, signalCloseLong, signalCloseShort);
+        // log.info("{} {} {} {}", signalOpenLong, signalOpenShort, signalCloseLong, signalCloseShort);
         if (next != null) {
             next().work(tradeSignal, driver, driverWait, action);
         }

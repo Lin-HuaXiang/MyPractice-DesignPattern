@@ -35,7 +35,7 @@ public class RsiIndicatorLink extends IndicatorLink {
     public void calc(WebDriver driver, WebDriverWait driverWait, Actions action) throws Exception {
 
         driver.switchTo().window(windowHandle);
-        
+
         Thread.sleep(1000);
         // url
         HuobiOpenSpider.getMain(driver);
@@ -58,7 +58,7 @@ public class RsiIndicatorLink extends IndicatorLink {
         // current price
         BigDecimal price = kline72.getData().get(0).getClose().setScale(3, RoundingMode.UP);
 
-        // Initialize the last price on the first call 
+        // Initialize the last price on the first call
         if (count == 0) {
             lastPrice = price;
         }
@@ -92,12 +92,14 @@ public class RsiIndicatorLink extends IndicatorLink {
         }
 
         // reverse
-        log.info("{}-{}, {}-{}, {}-{}, {}-{}]", price, calcRsi14, lastRsi9, calcRsi9, latRsi12, calcRsi12,
-                lastRsi72, calcRsi72);
+        log.info("{}-{}, {}-{}, {}-{}, {}-{}]", price, calcRsi14, lastRsi9, calcRsi9, latRsi12, calcRsi12, lastRsi72,
+                calcRsi72);
 
-        lastRsi9 = calcRsi9;
-        latRsi12 = calcRsi12;
-        lastRsi72 = calcRsi72;
+        if (count % 5 == 0) {
+            lastRsi9 = calcRsi9;
+            latRsi12 = calcRsi12;
+            lastRsi72 = calcRsi72;
+        }
 
     }
 

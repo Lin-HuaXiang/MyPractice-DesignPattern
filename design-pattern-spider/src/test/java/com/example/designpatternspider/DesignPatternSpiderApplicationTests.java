@@ -88,7 +88,7 @@ class DesignPatternSpiderApplicationTests {
 		rsiIndicator.appendLink(macdIndicator);
 
 		TradeSignal tradeSignal = new TradeSignal();
-		int n = 3;
+		int n = 1440;
 		for (int i = 0; i < n; i++) {
 
 			try {
