@@ -1,6 +1,7 @@
 package com.example.designpatternspider.selenium.huobi.observer.event;
 
 import com.example.designpatternspider.selenium.huobi.chain.futures.usdt.fil.indicator.IndicatorLink;
+import com.example.designpatternspider.selenium.huobi.chain.futures.usdt.fil.indicator.TradeSignal;
 import com.example.designpatternspider.selenium.huobi.observer.event.EventManager.EventType;
 import com.example.designpatternspider.selenium.huobi.observer.futrues.usdt.fil.CloseLongSwapEvent;
 import com.example.designpatternspider.selenium.huobi.observer.futrues.usdt.fil.CloseShortSwapEvent;
@@ -12,6 +13,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class SwapService {
 
     private ISwapTrade swapTrade;
@@ -19,25 +23,25 @@ public class SwapService {
     private EventManager eventManager;
 
     public SwapService(ISwapTrade swapTrade) {
+        this.swapTrade = swapTrade;
         eventManager = new EventManager();
         eventManager.subscribe(EventType.OPEN_LONG, new OpenLongSwapEvent());
         eventManager.subscribe(EventType.OPEN_SHORT, new OpenShortSwapEvent());
         eventManager.subscribe(EventType.CLOSE_LONG, new CloseLongSwapEvent());
         eventManager.subscribe(EventType.CLOSE_SHORT, new CloseShortSwapEvent());
-        this.swapTrade = swapTrade;
     }
 
-    public void notify(IndicatorLink indicatorLink, WebDriver driver, WebDriverWait driverWait, Actions action) throws Exception {
-        if (Boolean.TRUE.equals(indicatorLink.getSignalOpenLong())) {
+    public void notify(TradeSignal tradeSignal, WebDriver driver, WebDriverWait driverWait, Actions action) throws Exception {
+        if (Boolean.TRUE.equals(tradeSignal.getSignalOpenLong())) {
             eventManager.notify(EventType.OPEN_LONG, swapTrade, driver, driverWait, action);
         }
-        if (Boolean.TRUE.equals(indicatorLink.getSignalOpenShort())) {
+        if (Boolean.TRUE.equals(tradeSignal.getSignalOpenShort())) {
             eventManager.notify(EventType.OPEN_SHORT, swapTrade, driver, driverWait, action);
         }
-        if (Boolean.TRUE.equals(indicatorLink.getSignalCloseLong())) {
+        if (Boolean.TRUE.equals(tradeSignal.getSignalCloseLong())) {
             eventManager.notify(EventType.CLOSE_LONG, swapTrade, driver, driverWait, action);
         }
-        if (Boolean.TRUE.equals(indicatorLink.getSignalCloseShort())) {
+        if (Boolean.TRUE.equals(tradeSignal.getSignalCloseShort())) {
             eventManager.notify(EventType.CLOSE_SHORT, swapTrade, driver, driverWait, action);
         }
     }

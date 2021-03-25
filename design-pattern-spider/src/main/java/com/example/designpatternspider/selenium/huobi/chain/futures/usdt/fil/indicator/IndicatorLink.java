@@ -4,9 +4,13 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * chain and template pattern
  */
+@Slf4j
 public abstract class IndicatorLink {
 
     protected String windowHandle = "";
@@ -40,15 +44,10 @@ public abstract class IndicatorLink {
     }
 
     private IndicatorLink next() {
-        // transfer trade signals
-        next.signalOpenLong = this.signalOpenLong;
-        next.signalOpenShort = this.signalOpenShort;
-        next.signalCloseLong = this.signalCloseLong;
-        next.signalCloseShort = this.signalCloseShort;
         return next;
     }
 
-    private void reset() {
+    public void reset() {
         signalOpenLong = false;
         signalOpenShort = false;
         signalCloseLong = false;
@@ -62,14 +61,24 @@ public abstract class IndicatorLink {
         return this;
     }
 
-    public void work(WebDriver driver, WebDriverWait driverWait, Actions action) throws Exception {
+    public void work(TradeSignal tradeSignal, WebDriver driver, WebDriverWait driverWait, Actions action) throws Exception {
         // calc current
         calc(driver, driverWait, action);
+        // append signal
+        appendSignal(tradeSignal);
         // calc next
+        log.info("{} {} {} {}", signalOpenLong, signalOpenShort, signalCloseLong, signalCloseShort);
         if (next != null) {
-            next().work(driver, driverWait, action);
+            next().work(tradeSignal, driver, driverWait, action);
         }
         // Reset the state only when the following tasks are completed 
         reset();
+    }
+
+    private void appendSignal(TradeSignal tradeSignal) {
+        tradeSignal.setSignalOpenLong(tradeSignal.getSignalOpenLong() && signalOpenLong);
+        tradeSignal.setSignalOpenShort(tradeSignal.getSignalOpenShort() && signalOpenShort);
+        tradeSignal.setSignalCloseLong(tradeSignal.getSignalCloseLong() && signalCloseLong);
+        tradeSignal.setSignalCloseShort(tradeSignal.getSignalCloseShort() && signalCloseShort);
     }
 }

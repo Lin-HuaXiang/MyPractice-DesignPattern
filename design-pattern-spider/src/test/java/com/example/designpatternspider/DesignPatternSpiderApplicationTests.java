@@ -12,6 +12,7 @@ import com.example.designpatternspider.selenium.huobi.chain.futures.usdt.fil.ind
 import com.example.designpatternspider.selenium.huobi.chain.futures.usdt.fil.indicator.MacdIndicatorLink;
 import com.example.designpatternspider.selenium.huobi.chain.futures.usdt.fil.indicator.MacdWebsiteIndicatorLink;
 import com.example.designpatternspider.selenium.huobi.chain.futures.usdt.fil.indicator.RsiIndicatorLink;
+import com.example.designpatternspider.selenium.huobi.chain.futures.usdt.fil.indicator.TradeSignal;
 import com.example.designpatternspider.selenium.huobi.observer.event.SwapService;
 import com.example.designpatternspider.selenium.huobi.strategy.futures.usdt.fil.WebsiteFilSwapTrade;
 import com.example.designpatternspider.selenium.huobi.strategy.trade.trade.ISwapTrade;
@@ -84,14 +85,16 @@ class DesignPatternSpiderApplicationTests {
 
 		IndicatorLink macdIndicator = new MacdWebsiteIndicatorLink(kline);
 		IndicatorLink rsiIndicator = new RsiIndicatorLink(api);
+		rsiIndicator.appendLink(macdIndicator);
 
-		int n = 1;
+		TradeSignal tradeSignal = new TradeSignal();
+		int n = 3;
 		for (int i = 0; i < n; i++) {
 
 			try {
-				rsiIndicator.work(driver, driverWait, action);
-				swapService.notify(rsiIndicator, driver, driverWait, action);
-
+				rsiIndicator.work(tradeSignal, driver, driverWait, action);
+				swapService.notify(tradeSignal, driver, driverWait, action);
+				tradeSignal.reset();
 			} catch (Exception e) {
 				log.error("第{}次获取数据，失败了", i + 1, e);
 			}
