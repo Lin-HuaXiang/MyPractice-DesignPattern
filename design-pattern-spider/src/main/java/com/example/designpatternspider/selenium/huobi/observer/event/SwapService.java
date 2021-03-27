@@ -1,5 +1,8 @@
 package com.example.designpatternspider.selenium.huobi.observer.event;
 
+import java.math.BigDecimal;
+
+import com.example.designpatternspider.selenium.huobi.api.HuobiLinearSwapSpider;
 import com.example.designpatternspider.selenium.huobi.chain.futures.usdt.fil.indicator.IndicatorLink;
 import com.example.designpatternspider.selenium.huobi.chain.futures.usdt.fil.indicator.TradeSignal;
 import com.example.designpatternspider.selenium.huobi.observer.event.EventManager.EventType;
@@ -44,6 +47,8 @@ public class SwapService {
         if (Boolean.TRUE.equals(tradeSignal.getSignalCloseShort())) {
             eventManager.notify(EventType.CLOSE_SHORT, swapTrade, driver, driverWait, action);
         }
+        BigDecimal price = HuobiLinearSwapSpider.getPrice(driver, driverWait, action);
+        swapTrade.getTotalEquity(driver, price);
     }
 
 

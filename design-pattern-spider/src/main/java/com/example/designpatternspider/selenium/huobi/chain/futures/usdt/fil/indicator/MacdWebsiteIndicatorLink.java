@@ -68,27 +68,27 @@ public class MacdWebsiteIndicatorLink extends IndicatorLink {
         // up channel
         if (macd.compareTo(BigDecimal.ZERO) > 0) {
             if (macd.compareTo(lastMacd) < 0 || dif.compareTo(lastDif) < 0) {
-                log.info("Ahead sense, up channel, trend worse");
+                log.info("up channel, trend turns negative");
                 signalCloseLong = true;
             }
         }
         // down channel
         if (macd.compareTo(BigDecimal.ZERO) < 0) {
             if (macd.compareTo(lastMacd) > 0 || dif.compareTo(lastDif) > 0) {
-                log.info("Ahead sense, down channel, trend worse");
+                log.info("down channel, trend turns negative");
                 signalCloseShort = true;
             }
         }
 
         if (macd.compareTo(BigDecimal.ZERO) >= 0 && lastMacd.compareTo(BigDecimal.ZERO) <= 0) {
-            log.info("Gold fork open long, close short");
+            log.info("gold fork");
             signalCloseShort = true;
             signalOpenLong = true;
         }
 
         // If the deviation changes from a positive number to a negative number, then
         if (macd.compareTo(BigDecimal.ZERO) <= 0 && lastMacd.compareTo(BigDecimal.ZERO) >= 0) {
-            log.info("Death fork open short, close long");
+            log.info("death fork");
             signalCloseLong = true;
             signalOpenShort = true;
         }
@@ -100,13 +100,13 @@ public class MacdWebsiteIndicatorLink extends IndicatorLink {
             // if two consecutive deviations decrease, then sell;
             // sell
             if (macd.compareTo(lastMacd) < 0 || dif.compareTo(lastDif) < 0) {
-                log.info("Upstream channel trend turns worse");
+                log.info("up channel, trend turns negative");
                 signalCloseLong = true;
             }
 
             if ((lastSubMacd.compareTo(BigDecimal.ZERO) <= 0 && subMacd.compareTo(BigDecimal.ZERO) > 0)
                     || (lastSubDif.compareTo(BigDecimal.ZERO) <= 0 && subDif.compareTo(BigDecimal.ZERO) > 0)) {
-                log.info("Upstream channel trend turns positive");
+                log.info("up channel, trend turns positive");
                 signalCloseShort = true;
                 signalOpenLong = true;
             }
@@ -117,25 +117,30 @@ public class MacdWebsiteIndicatorLink extends IndicatorLink {
         if (macd.compareTo(BigDecimal.ZERO) < 0) {
 
             if (macd.compareTo(lastMacd) > 0 || dif.compareTo(lastDif) > 0) {
-                log.info("Downstream channel trend worsened");
+                log.info("down channel, trend turns negative");
                 signalCloseShort = true;
             }
 
             if ((lastSubMacd.compareTo(BigDecimal.ZERO) >= 0 && subMacd.compareTo(BigDecimal.ZERO) < 0)
                     || (lastSubDif.compareTo(BigDecimal.ZERO) >= 0 && subDif.compareTo(BigDecimal.ZERO) < 0)) {
-                log.info("Downtrend channel turns positive");
+                log.info("down channel, trend turns positive");
                 signalCloseLong = true;
                 signalOpenShort = true;
             }
         }
 
         // 先打印
-        log.info("{}, {}, {}", price, dif, macd);
-        lastPrice = price;
-        lastDif = dif;
-        lastMacd = macd;
-        lastSubDif = subDif;
-        lastSubMacd = subMacd;
+        log.info("{}-{}, {}-{}, {}-{}", price, lastPrice, dif, lastDif, macd, lastMacd);
+
+        if (count % 5 == 0) {
+            lastPrice = price;
+            lastDif = dif;
+            lastMacd = macd;
+            lastSubDif = subDif;
+            lastSubMacd = subMacd;
+        }
+
+        count++;
     }
 
 }

@@ -8,6 +8,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class MockFilSwapTrade implements ISwapTrade {
 
     private Integer duoCount = 0;
@@ -51,6 +54,7 @@ public class MockFilSwapTrade implements ISwapTrade {
         sum = sum.add(subtractPrice.multiply(BigDecimal.valueOf(duoCount)))
                 .add(subtractPrice.multiply(BigDecimal.valueOf(kongCount)).multiply(BigDecimal.valueOf(-1)));
         this.lastPrice = price;
+        log.info("balance {}, {}, {}", sum, duoCount, kongCount);
         return sum;
     }
 

@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class HuobiLinearSwapSpider {
 
-    public static final String KLINE_URL = "https://futures.huobi.be/zh-cn/linear_swap/exchange/#contract_code=FIL-USDT&type=isolated";
+    public static final String KLINE_URL = "https://futures.huobi.li/zh-cn/linear_swap/exchange/#contract_code=FIL-USDT&type=isolated";
 
     public static void openProfession(WebDriver driver, WebDriverWait driverWait, Actions action)
             throws InterruptedException {

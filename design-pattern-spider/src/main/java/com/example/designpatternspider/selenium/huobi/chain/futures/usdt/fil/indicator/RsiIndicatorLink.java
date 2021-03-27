@@ -101,6 +101,8 @@ public class RsiIndicatorLink extends IndicatorLink {
             lastRsi72 = calcRsi72;
         }
 
+        count++;
+
     }
 
 }
