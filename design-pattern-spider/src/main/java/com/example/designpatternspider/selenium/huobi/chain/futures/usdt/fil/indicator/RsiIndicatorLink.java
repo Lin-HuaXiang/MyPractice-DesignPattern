@@ -42,7 +42,7 @@ public class RsiIndicatorLink extends IndicatorLink {
         // fil usdt
         HuobiOpenSpider.inputSymbol(driver, action, "filusdt");
         // 1min
-        HuobiOpenSpider.inputPeriod(driver, action, "5min");
+        HuobiOpenSpider.inputPeriod(driver, action, "15min");
         // 72
         HuobiOpenSpider.inputSize(driver, action, "72");
 
@@ -65,30 +65,30 @@ public class RsiIndicatorLink extends IndicatorLink {
 
         if (lastRsi9.compareTo(lastRsi72) < 0 && calcRsi9.compareTo(calcRsi72) > 0
                 && calcRsi12.compareTo(calcRsi72) > 0) {
-            log.info("up cross");
+            log.info("rsi up cross");
             signalOpenLong = true;
             signalCloseShort = true;
         }
 
         if (lastRsi9.compareTo(lastRsi72) > 0 && calcRsi9.compareTo(calcRsi72) < 0
                 && calcRsi12.compareTo(calcRsi72) < 0) {
-            log.info("down cross");
+            log.info("rsi down cross");
             signalOpenShort = true;
             signalCloseLong = true;
         }
 
         // The heat is too high, need to adapt to the macd mac line drop
         if (calcRsi9.divide(calcRsi72, 2, RoundingMode.HALF_DOWN).compareTo(BigDecimal.valueOf(1.45)) >= 0) {
-            log.info("touch highest");
+            log.info("rsi touch highest");
             signalOpenShort = true;
             signalCloseLong = true;
         }
 
         // The heat is too high, need to adjust to MACD line drop
         if (calcRsi9.divide(calcRsi72, 2, RoundingMode.HALF_DOWN).compareTo(BigDecimal.valueOf(0.55)) <= 0) {
-            log.info("touch lowest");
+            log.info("rsi touch lowest");
+            signalOpenLong = true;
             signalCloseShort = true;
-            signalCloseLong = true;
         }
 
         // reverse

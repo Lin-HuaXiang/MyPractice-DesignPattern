@@ -65,30 +65,15 @@ public class MacdWebsiteIndicatorLink extends IndicatorLink {
             lastPrice = price;
         }
 
-        // up channel
-        if (macd.compareTo(BigDecimal.ZERO) > 0) {
-            if (macd.compareTo(lastMacd) < 0 || dif.compareTo(lastDif) < 0) {
-                log.info("up channel, trend turns negative");
-                signalCloseLong = true;
-            }
-        }
-        // down channel
-        if (macd.compareTo(BigDecimal.ZERO) < 0) {
-            if (macd.compareTo(lastMacd) > 0 || dif.compareTo(lastDif) > 0) {
-                log.info("down channel, trend turns negative");
-                signalCloseShort = true;
-            }
-        }
-
         if (macd.compareTo(BigDecimal.ZERO) >= 0 && lastMacd.compareTo(BigDecimal.ZERO) <= 0) {
-            log.info("gold fork");
+            log.info("macd macd gold fork");
             signalCloseShort = true;
             signalOpenLong = true;
         }
 
         // If the deviation changes from a positive number to a negative number, then
         if (macd.compareTo(BigDecimal.ZERO) <= 0 && lastMacd.compareTo(BigDecimal.ZERO) >= 0) {
-            log.info("death fork");
+            log.info("macd death fork");
             signalCloseLong = true;
             signalOpenShort = true;
         }
@@ -100,13 +85,13 @@ public class MacdWebsiteIndicatorLink extends IndicatorLink {
             // if two consecutive deviations decrease, then sell;
             // sell
             if (macd.compareTo(lastMacd) < 0 || dif.compareTo(lastDif) < 0) {
-                log.info("up channel, trend turns negative");
+                log.info("macd up channel, trend turns negative");
                 signalCloseLong = true;
             }
 
             if ((lastSubMacd.compareTo(BigDecimal.ZERO) <= 0 && subMacd.compareTo(BigDecimal.ZERO) > 0)
                     || (lastSubDif.compareTo(BigDecimal.ZERO) <= 0 && subDif.compareTo(BigDecimal.ZERO) > 0)) {
-                log.info("up channel, trend turns positive");
+                log.info("macd up channel, trend turns positive");
                 signalCloseShort = true;
                 signalOpenLong = true;
             }
@@ -117,13 +102,13 @@ public class MacdWebsiteIndicatorLink extends IndicatorLink {
         if (macd.compareTo(BigDecimal.ZERO) < 0) {
 
             if (macd.compareTo(lastMacd) > 0 || dif.compareTo(lastDif) > 0) {
-                log.info("down channel, trend turns negative");
+                log.info("macd down channel, trend turns negative");
                 signalCloseShort = true;
             }
 
             if ((lastSubMacd.compareTo(BigDecimal.ZERO) >= 0 && subMacd.compareTo(BigDecimal.ZERO) < 0)
                     || (lastSubDif.compareTo(BigDecimal.ZERO) >= 0 && subDif.compareTo(BigDecimal.ZERO) < 0)) {
-                log.info("down channel, trend turns positive");
+                log.info("macd down channel, trend turns positive");
                 signalCloseLong = true;
                 signalOpenShort = true;
             }

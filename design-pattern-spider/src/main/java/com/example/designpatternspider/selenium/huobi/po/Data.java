@@ -22,6 +22,7 @@ public class Data {
     private BigDecimal amount;
     private BigDecimal vol;
     private Integer count;
+    private String time;
 
 
 }

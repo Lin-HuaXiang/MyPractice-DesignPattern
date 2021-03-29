@@ -76,9 +76,9 @@ public abstract class IndicatorLink {
     }
 
     private void appendSignal(TradeSignal tradeSignal) {
-        tradeSignal.setSignalOpenLong(tradeSignal.getSignalOpenLong() && signalOpenLong);
-        tradeSignal.setSignalOpenShort(tradeSignal.getSignalOpenShort() && signalOpenShort);
-        tradeSignal.setSignalCloseLong(tradeSignal.getSignalCloseLong() && signalCloseLong);
-        tradeSignal.setSignalCloseShort(tradeSignal.getSignalCloseShort() && signalCloseShort);
+        tradeSignal.setSignalOpenLong(tradeSignal.getSignalOpenLong() || signalOpenLong);
+        tradeSignal.setSignalOpenShort(tradeSignal.getSignalOpenShort() || signalOpenShort);
+        tradeSignal.setSignalCloseLong(tradeSignal.getSignalCloseLong() || signalCloseLong);
+        tradeSignal.setSignalCloseShort(tradeSignal.getSignalCloseShort() || signalCloseShort);
     }
 }

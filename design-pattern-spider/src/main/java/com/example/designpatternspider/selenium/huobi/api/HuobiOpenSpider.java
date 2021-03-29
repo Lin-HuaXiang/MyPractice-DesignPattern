@@ -203,7 +203,7 @@ public class HuobiOpenSpider {
         // headless open driver
         ChromeOptions chromeOptions = new ChromeOptions();
         // chromeOptions.setBinary("/opt/google/chrome/google-chrome");
-        // chromeOptions.addArguments("--headless");
+        chromeOptions.addArguments("--headless");
         chromeOptions.addArguments("disable-gpu");
         chromeOptions.addArguments("no-sandbox");
         chromeOptions.addArguments("disable-infobars");

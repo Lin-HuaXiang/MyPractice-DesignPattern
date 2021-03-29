@@ -11,7 +11,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import lombok.extern.slf4j.Slf4j;
@@ -37,12 +36,12 @@ public class HuobiLinearSwapSpider {
 
     public static void openMinute(WebDriver driver, WebDriverWait driverWait, Actions action)
             throws InterruptedException {
-        String selectMinute = "#chartOuterWrap > div.k-chart-head.content-box.border-split > div.chart-operate > div.min-screen.secondary-font > button:nth-child(3).selected";
+        String selectMinute = "#chartOuterWrap > div.k-chart-head.content-box.border-split > div.chart-operate > div.min-screen.secondary-font > button:nth-child(4).selected";
         WebElement eSelect = SpiderUtil.getElementUntil(By.cssSelector(selectMinute), driver, 3);
         if (eSelect != null) {
             return;
         }
-        String cssMinute = "#chartOuterWrap > div.k-chart-head.content-box.border-split > div.chart-operate > div.min-screen.secondary-font > button:nth-child(3)";
+        String cssMinute = "#chartOuterWrap > div.k-chart-head.content-box.border-split > div.chart-operate > div.min-screen.secondary-font > button:nth-child(4)";
         WebElement eMinute = SpiderUtil.getElementUntil(By.cssSelector(cssMinute), driver, 3);
         log.info("click 1 minute graph, {}", eMinute.getText());
         action.click(eMinute).build().perform();
@@ -122,6 +121,15 @@ public class HuobiLinearSwapSpider {
         Thread.sleep(1000);
     }
 
+    public static void removeUnitMacd(WebDriver driver, WebDriverWait driverWait, Actions action)
+            throws InterruptedException {
+        // 鼠标移动到面板，避免数据没有刷新
+        String cssMacdBarLeft = "/html/body/div[1]/div[1]/div/div[1]/div[2]/div[2]/div/div[2]/div[1]";
+        WebElement eMacdBarLeft = SpiderUtil.getElementUntil(By.xpath(cssMacdBarLeft), driver, 3);
+        action.click(eMacdBarLeft).build().perform();
+        Thread.sleep(1000);
+    }
+
     public static BigDecimal getMacdDif(WebDriver driver, WebDriverWait driverWait, Actions action) {
         String cssMac = "/html/body/div[1]/div[1]/div/div[1]/div[2]/table/tbody/tr[5]/td[2]/div/div[3]/div/div/span[2]/span";
         WebElement eMac = SpiderUtil.getElementUntil(By.xpath(cssMac), driver, 3);
@@ -141,6 +149,14 @@ public class HuobiLinearSwapSpider {
         WebElement e1 = SpiderUtil.getElementUntil(By.xpath(css1), driver, 3);
         String priceString = e1.getText();
         return new BigDecimal(priceString);
+    }
+    
+    public static void clickPrice(WebDriver driver, WebDriverWait driverWait, Actions action) throws InterruptedException {
+        // price charge
+        String css1 = "//*[@id=\"root\"]/div[1]/div[2]/div[2]/div[1]/div[2]/div[1]/div[2]/span[1]";
+        WebElement e1 = SpiderUtil.getElementUntil(By.xpath(css1), driver, 3);
+        action.click(e1).build().perform();
+        Thread.sleep(1000);
     }
 
     public static void switchToKChart(WebDriver driver, WebDriverWait driverWait, Actions action) {

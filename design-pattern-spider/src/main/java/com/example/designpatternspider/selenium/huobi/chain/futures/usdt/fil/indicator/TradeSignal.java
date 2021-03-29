@@ -5,15 +5,15 @@ import lombok.Data;
 @Data
 public class TradeSignal {
 
-    private Boolean signalOpenLong = true;
-    private Boolean signalOpenShort = true;
-    private Boolean signalCloseLong = true;
-    private Boolean signalCloseShort = true;
+    private Boolean signalOpenLong = false;
+    private Boolean signalOpenShort = false;
+    private Boolean signalCloseLong = false;
+    private Boolean signalCloseShort = false;
 
     public void reset() {
-        signalOpenLong = true;
-        signalOpenShort = true;
-        signalCloseLong = true;
-        signalCloseShort = true;
+        signalOpenLong = false;
+        signalOpenShort = false;
+        signalCloseLong = false;
+        signalCloseShort = false;
     }
 }

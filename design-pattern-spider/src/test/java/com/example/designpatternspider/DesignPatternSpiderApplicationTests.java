@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Iterator;
 import java.util.Set;
 
+import com.alibaba.excel.util.DateUtils;
 import com.example.designpatternspider.selenium.huobi.api.HuobiLinearSwapSpider;
 import com.example.designpatternspider.selenium.huobi.api.HuobiOpenSpider;
 import com.example.designpatternspider.selenium.huobi.chain.futures.usdt.fil.indicator.IndicatorLink;
@@ -13,7 +14,7 @@ import com.example.designpatternspider.selenium.huobi.chain.futures.usdt.fil.ind
 import com.example.designpatternspider.selenium.huobi.chain.futures.usdt.fil.indicator.RsiIndicatorLink;
 import com.example.designpatternspider.selenium.huobi.chain.futures.usdt.fil.indicator.TradeSignal;
 import com.example.designpatternspider.selenium.huobi.observer.event.SwapService;
-import com.example.designpatternspider.selenium.huobi.strategy.futures.usdt.fil.WebsiteFilSwapTrade;
+import com.example.designpatternspider.selenium.huobi.strategy.futures.usdt.fil.MockFilSwapTrade;
 import com.example.designpatternspider.selenium.huobi.strategy.trade.trade.ISwapTrade;
 import com.example.designpatternspider.selenium.util.SpiderUtil;
 
@@ -54,7 +55,7 @@ class DesignPatternSpiderApplicationTests {
 	@Test
 	void testContextLoads() throws Exception {
 
-		ISwapTrade swapTrade = new WebsiteFilSwapTrade();
+		ISwapTrade swapTrade = new MockFilSwapTrade();
 		SwapService swapService = new SwapService(swapTrade);
 		// Gets the Handle for the current window
 		String parentHandle = driver.getWindowHandle();
@@ -63,7 +64,7 @@ class DesignPatternSpiderApplicationTests {
 		// 点击新窗口
 		((JavascriptExecutor) driver).executeScript("window.open()");
 		((JavascriptExecutor) driver).executeScript("window.open()");
-	
+
 		// 获取所有的Handle
 		Set<String> handles = driver.getWindowHandles();
 		// 判断是否打开了新窗口
@@ -100,12 +101,13 @@ class DesignPatternSpiderApplicationTests {
 			}
 			Calendar c1 = Calendar.getInstance(); // 当前日期
 			int sec = c1.get(Calendar.SECOND);
-			int intervalSec = 60 - sec;
+			int intervalSec = 180 - sec;
 			Thread.sleep(intervalSec * 1000);
 		}
 
 		assertTrue(true);
 
 	}
+
 
 }

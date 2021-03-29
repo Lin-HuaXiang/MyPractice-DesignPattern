@@ -35,6 +35,8 @@ public class SwapService {
     }
 
     public void notify(TradeSignal tradeSignal, WebDriver driver, WebDriverWait driverWait, Actions action) throws Exception {
+        BigDecimal price = HuobiLinearSwapSpider.getPrice(driver, driverWait, action);
+        swapTrade.getTotalEquity(driver, price);
         if (Boolean.TRUE.equals(tradeSignal.getSignalOpenLong())) {
             eventManager.notify(EventType.OPEN_LONG, swapTrade, driver, driverWait, action);
         }
@@ -47,8 +49,6 @@ public class SwapService {
         if (Boolean.TRUE.equals(tradeSignal.getSignalCloseShort())) {
             eventManager.notify(EventType.CLOSE_SHORT, swapTrade, driver, driverWait, action);
         }
-        BigDecimal price = HuobiLinearSwapSpider.getPrice(driver, driverWait, action);
-        swapTrade.getTotalEquity(driver, price);
     }
 
 
