@@ -18,12 +18,13 @@ import com.example.designpatternspider.selenium.huobi.po.HuoBiKline;
 import com.example.designpatternspider.selenium.huobi.po.export.ReviewExport;
 import com.example.designpatternspider.selenium.huobi.util.excel.ReviewExportListener;
 import com.example.designpatternspider.selenium.util.MacdIndicator;
+import com.example.designpatternspider.selenium.util.RsiIndicator;
 import com.example.designpatternspider.selenium.util.SpiderUtil;
 
-import org.apache.poi.ss.formula.functions.T;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.beans.BeanUtils;
 import org.springframework.util.ObjectUtils;
 
 import lombok.extern.slf4j.Slf4j;
@@ -44,14 +45,21 @@ public class ReviewDataUtil {
     public static final String EXCEL_NAME = "fil-%s.xlsx";
 
     public static void main(String[] args) throws Exception {
-        String period = "1day";
-        String fileName = String.format(EXCEL_NAME, period);
-        File dayData = new File(FIL_FUTURE_DATA + fileName);
-        if (!dayData.exists()) {
-            importHistoricalData(period);
+        // 1min, 5min, 15min, 30min, 60min, 4hour, 1day, 1mon, 1week, 1year
+        String[] periods = {"1min","5min","15min","60min","4hour","1day"};
+        for (String period : periods) {
+            try {
+                String fileName = String.format(EXCEL_NAME, period);
+                File dayData = new File(FIL_FUTURE_DATA + fileName);
+                if (!dayData.exists()) {
+                    importHistoricalData(period);
+                }
+                List<ReviewExport> listData = getLocalData(period);
+                calcData(listData, period);
+            } catch (Exception e) {
+                log.error("", e);
+            }
         }
-        List<ReviewExport> listData = getLocalData(period);
-        calcData(listData, period);
     }
 
     public static List<ReviewExport> getLocalData(String period) {
@@ -69,15 +77,68 @@ public class ReviewDataUtil {
     public static void calcData(List<ReviewExport> listData, String period) {
         Boolean bool = false;
         ReviewExport re;
-        for (int i = 0; i < listData.size() - 1; i++) {
+        // calculate macd
+        for (int i = 0; i < listData.size(); i++) {
             re = listData.get(i);
             if (ObjectUtils.isEmpty(listData.get(i).getMacd())) {
                 List<ReviewExport> subList = listData.subList(0, i + 1);
-                List<BigDecimal> tempList = subList.stream().map(u -> u.getPrice()).collect(Collectors.toList());
+                List<BigDecimal> tempList = subList.stream().map(ReviewExport::getPrice).collect(Collectors.toList());
                 HashMap<String, BigDecimal> macd = MacdIndicator.getMACD(tempList, 12, 26, 9);
                 re.setDif(macd.get("DIF"));
                 re.setDea(macd.get("DEA"));
                 re.setMacd(macd.get("MACD"));
+                bool |= true;
+            }
+        }
+        // calculate ris
+        for (int i = listData.size() - 1; i >= 0; i--) {
+            re = listData.get(i);
+            if (i - 8 >= 0 && ObjectUtils.isEmpty(re.getCalcRsi9())) {
+                List<ReviewExport> subList = listData.subList(i - 8, i + 1);
+                List<Data> tempList = new ArrayList<>();
+                for (ReviewExport reviewExport : subList) {
+                    Data data = new Data();
+                    BeanUtils.copyProperties(reviewExport, data);
+                    tempList.add(data);
+                }
+                BigDecimal calcRsi9 = RsiIndicator.calcRsi(tempList);
+                re.setCalcRsi9(calcRsi9);
+                bool |= true;
+            }
+            if (i - 11 >= 0 && ObjectUtils.isEmpty(re.getCalcRsi12())) {
+                List<ReviewExport> subList = listData.subList(i - 11, i + 1);
+                List<Data> tempList = new ArrayList<>();
+                for (ReviewExport reviewExport : subList) {
+                    Data data = new Data();
+                    BeanUtils.copyProperties(reviewExport, data);
+                    tempList.add(data);
+                }
+                BigDecimal calcRsi12 = RsiIndicator.calcRsi(tempList);
+                re.setCalcRsi12(calcRsi12);
+                bool |= true;
+            }
+            if (i - 13 >= 0 && ObjectUtils.isEmpty(re.getCalcRsi14())) {
+                List<ReviewExport> subList = listData.subList(i - 13, i + 1);
+                List<Data> tempList = new ArrayList<>();
+                for (ReviewExport reviewExport : subList) {
+                    Data data = new Data();
+                    BeanUtils.copyProperties(reviewExport, data);
+                    tempList.add(data);
+                }
+                BigDecimal calcRsi14 = RsiIndicator.calcRsi(tempList);
+                re.setCalcRsi14(calcRsi14);
+                bool |= true;
+            }
+            if (i - 71 >= 0 && ObjectUtils.isEmpty(re.getCalcRsi72())) {
+                List<ReviewExport> subList = listData.subList(i - 71, i + 1);
+                List<Data> tempList = new ArrayList<>();
+                for (ReviewExport reviewExport : subList) {
+                    Data data = new Data();
+                    BeanUtils.copyProperties(reviewExport, data);
+                    tempList.add(data);
+                }
+                BigDecimal calcRsi72 = RsiIndicator.calcRsi(tempList);
+                re.setCalcRsi72(calcRsi72);
                 bool |= true;
             }
         }
@@ -126,7 +187,7 @@ public class ReviewDataUtil {
             // 1min
             HuobiOpenSpider.inputPeriod(driver, action, period);
             // 72
-            HuobiOpenSpider.inputSize(driver, action, "2000");
+            HuobiOpenSpider.inputSize(driver, action, "200");
 
             HuobiOpenSpider.sendRequest(driver, action);
             HuoBiKline kline = HuobiOpenSpider.getData(driver);
@@ -151,6 +212,8 @@ public class ReviewDataUtil {
                 Data data = dataList.get(i);
                 ReviewExport reviewExport = new ReviewExport();
                 reviewExport.setPrice(data.getClose());
+                reviewExport.setClose(data.getClose());
+                reviewExport.setOpen(data.getOpen());
                 reviewExport.setTime(data.getTime());
                 if (dataList.size() - 1 == i) {
                     reviewExport.setMacd(BigDecimal.ZERO);
@@ -168,11 +231,12 @@ public class ReviewDataUtil {
             ExcelWriter build = EasyExcelFactory.write(FIL_FUTURE_DATA + fileName, ReviewExport.class).build();
             build.write(reviewList, EasyExcelFactory.writerSheet(0, "sheet0").build());
             build.finish();
+            Thread.sleep(5000);
         } catch (Exception e) {
             log.error("", e);
+        } finally {
             SpiderUtil.closeBrowser(driver);
         }
-
     }
 
 }

@@ -37,7 +37,12 @@ public class RsiIndicator {
         // down Sum
         BigDecimal downRs = downSum.divide(BigDecimal.valueOf(size), 6, RoundingMode.HALF_DOWN);
         // RS
-        BigDecimal rs = upRs.divide(downRs, 6, RoundingMode.HALF_DOWN);
+        BigDecimal rs;
+        if (downRs.compareTo(BigDecimal.ZERO) == 0) {
+            rs = BigDecimal.ZERO;
+        } else {
+            rs = upRs.divide(downRs, 6, RoundingMode.HALF_DOWN);
+        }
         // 1+RS
         BigDecimal onePlusRs = BigDecimal.valueOf(1).add(rs);
         // 100/(1+RS)
