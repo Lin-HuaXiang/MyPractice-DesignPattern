@@ -164,4 +164,13 @@ public class HuobiLinearSwapSpider {
         WebElement eIframe = SpiderUtil.getElementUntil(By.cssSelector("#kChartProfession > iframe"), driver, 3);
         driver.switchTo().frame(eIframe);
     }
+
+	public static void clickChartBarRate(WebDriver driver, WebDriverWait driverWait, Actions action)
+            throws InterruptedException {
+        // price charge
+        String css1 = "/html/body/div[1]/div[1]/div/div[1]/div[2]/table/tbody/tr[3]/td[3]";
+        WebElement e1 = SpiderUtil.getElementUntil(By.xpath(css1), driver, 3);
+        action.click(e1).build().perform();
+        Thread.sleep(1000);
+	}
 }

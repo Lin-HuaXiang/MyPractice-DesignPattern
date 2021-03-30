@@ -48,6 +48,7 @@ public class MacdWebsiteIndicatorLink extends IndicatorLink {
         HuobiLinearSwapSpider.switchToKChart(driver, driverWait, action);
         // refresh macd panel
         HuobiLinearSwapSpider.refreshMacd(driver, driverWait, action);
+        HuobiLinearSwapSpider.clickChartBarRate(driver, driverWait, action);
         // get macd dif
         BigDecimal dif = HuobiLinearSwapSpider.getMacdDif(driver, driverWait, action);
         // get macd
