@@ -38,7 +38,7 @@ public class ReviewDataUtil {
     public static final String USER_HOME = System.getProperty("user.home");
 
     /**
-     * FIL FUTRUE DATA
+     * FIL FUTURE DATA
      */
     public static final String FIL_FUTURE_DATA = USER_HOME + "\\huobi\\fil\\future\\data\\";
 
@@ -46,7 +46,7 @@ public class ReviewDataUtil {
 
     public static void main(String[] args) throws Exception {
         // 1min, 5min, 15min, 30min, 60min, 4hour, 1day, 1mon, 1week, 1year
-        String[] periods = {"1min","5min","15min","60min","4hour","1day"};
+        String[] periods = { "1min", "5min", "15min", "60min", "4hour", "1day" };
         for (String period : periods) {
             try {
                 String fileName = String.format(EXCEL_NAME, period);
@@ -77,6 +77,21 @@ public class ReviewDataUtil {
     public static void calcData(List<ReviewExport> listData, String period) {
         Boolean bool = false;
         ReviewExport re;
+
+        bool = calcMACD(listData, bool);
+
+        bool = calcRSI(listData, bool);
+
+        if (Boolean.TRUE.equals(bool)) {
+            String fileName = String.format(EXCEL_NAME, period);
+            ExcelWriter build = EasyExcelFactory.write(FIL_FUTURE_DATA + fileName, ReviewExport.class).build();
+            build.write(listData, EasyExcelFactory.writerSheet(0, "sheet0").build());
+            build.finish();
+        }
+    }
+
+    private static Boolean calcMACD(List<ReviewExport> listData, Boolean bool) {
+        ReviewExport re;
         // calculate macd
         for (int i = 0; i < listData.size(); i++) {
             re = listData.get(i);
@@ -90,6 +105,11 @@ public class ReviewDataUtil {
                 bool |= true;
             }
         }
+        return bool;
+    }
+
+    private static Boolean calcRSI(List<ReviewExport> listData, Boolean bool) {
+        ReviewExport re;
         // calculate ris
         for (int i = listData.size() - 1; i >= 0; i--) {
             re = listData.get(i);
@@ -142,12 +162,7 @@ public class ReviewDataUtil {
                 bool |= true;
             }
         }
-        if (Boolean.TRUE.equals(bool)) {
-            String fileName = String.format(EXCEL_NAME, period);
-            ExcelWriter build = EasyExcelFactory.write(FIL_FUTURE_DATA + fileName, ReviewExport.class).build();
-            build.write(listData, EasyExcelFactory.writerSheet(0, "sheet0").build());
-            build.finish();
-        }
+        return bool;
     }
 
     public static void calcLatestMACD(String period) throws Exception {
@@ -197,16 +212,9 @@ public class ReviewDataUtil {
 
             List<Data> dataList = kline.getData();
 
-            Calendar c = Calendar.getInstance();
-            c.setTime(date);
-
             List<ReviewExport> reviewList = new ArrayList<>();
 
-            for (int i = 0; i < dataList.size(); i++) {
-                Data data = dataList.get(i);
-                data.setTime(DateUtils.format(c.getTime(), DateUtils.DATE_FORMAT_10));
-                c.add(Calendar.DATE, -1);
-            }
+            calcPeriodTime(period, dataList, ts);
 
             for (int i = dataList.size() - 1; i >= 0; i--) {
                 Data data = dataList.get(i);
@@ -236,6 +244,69 @@ public class ReviewDataUtil {
             log.error("", e);
         } finally {
             SpiderUtil.closeBrowser(driver);
+        }
+    }
+
+    private static void calcPeriodTime(String period, List<Data> dataList, long ts) {
+        int minute;
+        int hour;
+        Date date = new Date(ts);
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.set(Calendar.SECOND, 0);
+        switch (period) {
+        case "1min":
+            for (int i = 0; i < dataList.size(); i++) {
+                Data data = dataList.get(i);
+                data.setTime(DateUtils.format(c.getTime(), DateUtils.DATE_FORMAT_19));
+                c.add(Calendar.MINUTE, -1);
+            }
+            break;
+        case "5min":
+            minute = c.get(Calendar.MINUTE);
+            c.add(Calendar.MINUTE, -(minute % 5));
+            for (int i = 0; i < dataList.size(); i++) {
+                Data data = dataList.get(i);
+                data.setTime(DateUtils.format(c.getTime(), DateUtils.DATE_FORMAT_19));
+                c.add(Calendar.MINUTE, -5);
+            }
+            break;
+        case "15min":
+            minute = c.get(Calendar.MINUTE);
+            c.add(Calendar.MINUTE, -(minute % 15));
+            for (int i = 0; i < dataList.size(); i++) {
+                Data data = dataList.get(i);
+                data.setTime(DateUtils.format(c.getTime(), DateUtils.DATE_FORMAT_19));
+                c.add(Calendar.MINUTE, -15);
+            }
+            break;
+        case "60min":
+            c.set(Calendar.MINUTE, 0);
+            for (int i = 0; i < dataList.size(); i++) {
+                Data data = dataList.get(i);
+                data.setTime(DateUtils.format(c.getTime(), DateUtils.DATE_FORMAT_19));
+                c.add(Calendar.HOUR, -1);
+            }
+            break;
+        case "4hour":
+            c.set(Calendar.MINUTE, 0);
+            hour = c.get(Calendar.HOUR);
+            c.add(Calendar.HOUR, -(hour % 4));
+            for (int i = 0; i < dataList.size(); i++) {
+                Data data = dataList.get(i);
+                data.setTime(DateUtils.format(c.getTime(), DateUtils.DATE_FORMAT_19));
+                c.add(Calendar.HOUR, -4);
+            }
+            break;
+        case "1day":
+            for (int i = 0; i < dataList.size(); i++) {
+                Data data = dataList.get(i);
+                data.setTime(DateUtils.format(c.getTime(), DateUtils.DATE_FORMAT_10));
+                c.add(Calendar.DATE, -1);
+            }
+            break;
+        default:
+            break;
         }
     }
 
