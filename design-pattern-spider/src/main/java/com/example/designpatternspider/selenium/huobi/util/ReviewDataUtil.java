@@ -42,29 +42,30 @@ public class ReviewDataUtil {
      */
     public static final String FIL_FUTURE_DATA = USER_HOME + "\\huobi\\fil\\future\\data\\";
 
-    public static final String EXCEL_NAME = "fil-%s.xlsx";
+    public static final String EXCEL_NAME = "%s-%s.xlsx";
 
     public static void main(String[] args) throws Exception {
         // 1min, 5min, 15min, 30min, 60min, 4hour, 1day, 1mon, 1week, 1year
         String[] periods = { "1min", "5min", "15min", "60min", "4hour", "1day" };
+        String currency = "ethusdt";
         for (String period : periods) {
             try {
-                String fileName = String.format(EXCEL_NAME, period);
+                String fileName = String.format(EXCEL_NAME, currency, period);
                 File dayData = new File(FIL_FUTURE_DATA + fileName);
                 if (!dayData.exists()) {
-                    importHistoricalData(period);
+                    importHistoricalData(currency, period);
                 }
-                List<ReviewExport> listData = getLocalData(period);
-                calcData(listData, period);
+                List<ReviewExport> listData = getLocalData(currency, period);
+                calcData(listData, currency, period);
             } catch (Exception e) {
                 log.error("", e);
             }
         }
     }
 
-    public static List<ReviewExport> getLocalData(String period) {
+    public static List<ReviewExport> getLocalData(String currency, String period) {
 
-        String fileName = String.format(EXCEL_NAME, period);
+        String fileName = String.format(EXCEL_NAME, currency, period);
         List<ReviewExport> listData = new ArrayList<>();
 
         File file = new File(FIL_FUTURE_DATA + fileName);
@@ -74,7 +75,7 @@ public class ReviewDataUtil {
         return listData;
     }
 
-    public static void calcData(List<ReviewExport> listData, String period) {
+    public static void calcData(List<ReviewExport> listData, String currency, String period) {
         Boolean bool = false;
         ReviewExport re;
 
@@ -83,7 +84,7 @@ public class ReviewDataUtil {
         bool = calcRSI(listData, bool);
 
         if (Boolean.TRUE.equals(bool)) {
-            String fileName = String.format(EXCEL_NAME, period);
+            String fileName = String.format(EXCEL_NAME, currency, period);
             ExcelWriter build = EasyExcelFactory.write(FIL_FUTURE_DATA + fileName, ReviewExport.class).build();
             build.write(listData, EasyExcelFactory.writerSheet(0, "sheet0").build());
             build.finish();
@@ -184,10 +185,10 @@ public class ReviewDataUtil {
         log.info("{}", macdBigDecimal);
     }
 
-    public static void importHistoricalData(String period) throws Exception {
+    public static void importHistoricalData(String currency, String period) throws Exception {
         WebDriver driver = null;
         try {
-            String fileName = String.format(EXCEL_NAME, period);
+            String fileName = String.format(EXCEL_NAME, currency, period);
             driver = HuobiOpenSpider.driverBuilderChromeHeadLess();
             Actions action = new Actions(driver);
             WebDriverWait driverWait = new WebDriverWait(driver, 30);
@@ -198,7 +199,7 @@ public class ReviewDataUtil {
             // url
             HuobiOpenSpider.getMain(driver);
             // fil usdt
-            HuobiOpenSpider.inputSymbol(driver, action, "filusdt");
+            HuobiOpenSpider.inputSymbol(driver, action, currency);
             // 1min
             HuobiOpenSpider.inputPeriod(driver, action, period);
             // 72

@@ -18,18 +18,20 @@ import lombok.extern.slf4j.Slf4j;
 @SpringBootTest
 public class ReviewDataMockTests {
 
-    @Test
-    public void printData() throws Exception {
-        String period = "1min";
-        List<ReviewExport> listData = ReviewDataUtil.getLocalData(period);
-        log.info("{}", listData.subList(listData.size() - 10, listData.size()));
-    }
+    // @Test
+    // public void printData() throws Exception {
+    //     String period = "1min";
+    //     List<ReviewExport> listData = ReviewDataUtil.getLocalData(period);
+    //     log.info("{}", listData.subList(listData.size() - 10, listData.size()));
+    // }
 
     @Test
     public void calcData() throws Exception {
-        String period = "4hour";
-        List<ReviewExport> listData = ReviewDataUtil.getLocalData(period);
-        ReviewDataMock reviewDataMock = new ReviewDataMock(BigDecimal.valueOf(15), new ReviewDataMockMacd());
+        String period = "60min";
+        String currency = "ethusdt";
+        List<ReviewExport> listData = ReviewDataUtil.getLocalData(currency, period);
+        listData = listData.subList(listData.size() - 50, listData.size());
+        ReviewDataMock reviewDataMock = new ReviewDataMock(BigDecimal.valueOf(1), new ReviewDataMockMacd(), new ReviewDataMockRsi());
         reviewDataMock.printResultMock(listData);
     }
 

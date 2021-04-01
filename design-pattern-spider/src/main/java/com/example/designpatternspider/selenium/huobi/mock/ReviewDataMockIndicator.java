@@ -1,5 +1,6 @@
 package com.example.designpatternspider.selenium.huobi.mock;
 
+import com.example.designpatternspider.selenium.huobi.po.Signal;
 import com.example.designpatternspider.selenium.huobi.po.export.ReviewExport;
 
 public abstract class ReviewDataMockIndicator {
@@ -22,7 +23,7 @@ public abstract class ReviewDataMockIndicator {
         return signalOpenShort;
     }
 
-    public abstract void calcMock(ReviewExport reviewExport);
+    public abstract Signal calcMock(ReviewExport reviewExport);
 
     public void resetSignal() {
         signalCloseShort = false;

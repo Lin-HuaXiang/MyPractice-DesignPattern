@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 
+import com.example.designpatternspider.selenium.huobi.po.Signal;
 import com.example.designpatternspider.selenium.huobi.po.export.ReviewExport;
 
 import org.springframework.util.ObjectUtils;
@@ -32,28 +33,30 @@ public class ReviewDataMock {
 
     public void printResultMock(List<ReviewExport> reviewExports) {
         for (ReviewExport reviewExport : reviewExports) {
+            Signal signal = new Signal();
             for (ReviewDataMockIndicator reviewDataMockIndicator : reviewDataMockIndicators) {
-                reviewDataMockIndicator.calcMock(reviewExport);
+                Signal temp = reviewDataMockIndicator.calcMock(reviewExport);
                 getTotalEquity(reviewExport.getPrice());
-                calcResultMock(reviewDataMockIndicator);
+                // Signaling between different indicators
+                signal.unite(temp);
                 reviewDataMockIndicator.resetSignal();
             }
+            calcResultMock(signal);
         }
-        log.info("{}, {}", min, max);
-
+        log.info("MI{}MA{}", min, max);
     }
 
-    private void calcResultMock(ReviewDataMockIndicator reviewDataMockIndicator) {
-        if (Boolean.TRUE.equals(reviewDataMockIndicator.getSignalOpenLong())) {
+    private void calcResultMock(Signal signal) {
+        if (Boolean.TRUE.equals(signal.getSignalOpenLong())) {
             openLong();
         }
-        if (Boolean.TRUE.equals(reviewDataMockIndicator.getSignalOpenShort())) {
+        if (Boolean.TRUE.equals(signal.getSignalOpenShort())) {
             openShort();
         }
-        if (Boolean.TRUE.equals(reviewDataMockIndicator.getSignalCloseLong())) {
+        if (Boolean.TRUE.equals(signal.getSignalCloseLong())) {
             closeLong();
         }
-        if (Boolean.TRUE.equals(reviewDataMockIndicator.getSignalCloseShort())) {
+        if (Boolean.TRUE.equals(signal.getSignalCloseShort())) {
             closeShort();
         }
     }
@@ -94,7 +97,7 @@ public class ReviewDataMock {
         BigDecimal tradeFee = subSum.abs().multiply(BigDecimal.valueOf(0.01)).setScale(4, RoundingMode.HALF_DOWN);
         sum = newSum.subtract(tradeFee);
         lastPrice = price;
-        log.info("b{}, t{}, f{}, l{}, s{}", sum, subSum, tradeFee, longCount, shortCount);
+        log.info("B{}T{}F{}L{}S{}", sum, subSum, tradeFee, longCount, shortCount);
         max = max.compareTo(sum) > 0 ? max : sum;
         min = min.compareTo(sum) < 0 ? min : sum;
         return sum;
