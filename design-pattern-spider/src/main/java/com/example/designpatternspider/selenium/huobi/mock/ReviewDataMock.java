@@ -21,26 +21,33 @@ public class ReviewDataMock {
 
     ReviewDataMockIndicator[] reviewDataMockIndicators;
 
-    private Integer longCount = 0;
-    private Integer shortCount = 0;
-    private Integer longRepository = 100;
-    private Integer shortRepository = 100;
-    private BigDecimal lastPrice;
+    public void buildRepository(BigDecimal decimal) {
+        longRepository = decimal;
+        shortRepository = decimal;
+    }
+
+    private BigDecimal longCount = BigDecimal.ZERO;
+    private BigDecimal shortCount = BigDecimal.ZERO;
+    private BigDecimal longRepository = BigDecimal.valueOf(100);
+    private BigDecimal shortRepository = BigDecimal.valueOf(100);
     private BigDecimal sum = BigDecimal.valueOf(10000);
     private BigDecimal max = BigDecimal.valueOf(Integer.MIN_VALUE);
     private BigDecimal min = BigDecimal.valueOf(Integer.MAX_VALUE);
+    private BigDecimal lastPrice;
     private BigDecimal multiples;
 
     public void printResultMock(List<ReviewExport> reviewExports) {
         for (ReviewExport reviewExport : reviewExports) {
             Signal signal = new Signal();
+            String time = reviewExport.getTime().replace("-", "").replace(" ", "").replace(":", "");
+            log.info("T{}", time);
             for (ReviewDataMockIndicator reviewDataMockIndicator : reviewDataMockIndicators) {
                 Signal temp = reviewDataMockIndicator.calcMock(reviewExport);
-                getTotalEquity(reviewExport.getPrice());
                 // Signaling between different indicators
                 signal.unite(temp);
                 reviewDataMockIndicator.resetSignal();
             }
+            getTotalEquity(reviewExport.getPrice());
             calcResultMock(signal);
         }
         log.info("MI{}MA{}", min, max);
@@ -51,7 +58,7 @@ public class ReviewDataMock {
             openLong();
         }
         if (Boolean.TRUE.equals(signal.getSignalOpenShort())) {
-            openShort();
+            // openShort();
         }
         if (Boolean.TRUE.equals(signal.getSignalCloseLong())) {
             closeLong();
@@ -62,27 +69,27 @@ public class ReviewDataMock {
     }
 
     private void openLong() {
-        int use = longRepository / 2;
-        longRepository -= use;
-        longCount += use;
+        BigDecimal use = longRepository.divide(BigDecimal.valueOf(2), 6, RoundingMode.HALF_DOWN);
+        longRepository =  longRepository.subtract(use);
+        longCount = longCount.add(use);
     }
 
     private void openShort() {
-        int use = shortRepository / 2;
-        shortRepository -= use;
-        shortCount += use;
+        BigDecimal use = shortRepository.divide(BigDecimal.valueOf(2), 6, RoundingMode.HALF_DOWN);
+        shortRepository = shortRepository.subtract(use);
+        shortCount = shortCount.add(use);
     }
 
     private void closeLong() {
-        longRepository += longCount;
-        int use = longCount;
-        longCount = 0;
+        longRepository = longRepository.add(longCount);
+        BigDecimal use = longCount;
+        longCount = BigDecimal.ZERO;
     }
 
     private void closeShort() {
-        shortRepository += shortCount;
-        int use = shortCount;
-        shortCount = 0;
+        shortRepository = shortRepository.add(shortCount);
+        BigDecimal use = shortCount;
+        shortCount = BigDecimal.ZERO;
     }
 
     private BigDecimal getTotalEquity(BigDecimal price) {
@@ -90,8 +97,8 @@ public class ReviewDataMock {
             lastPrice = price;
         }
         BigDecimal subtractPrice = price.subtract(lastPrice);
-        BigDecimal newSum = sum.add(subtractPrice.multiply(BigDecimal.valueOf(longCount)).multiply(multiples))
-                .add(subtractPrice.multiply(BigDecimal.valueOf(shortCount)).multiply(BigDecimal.valueOf(-1)).multiply(multiples));
+        BigDecimal newSum = sum.add(subtractPrice.multiply(longCount).multiply(multiples))
+                .add(subtractPrice.multiply(shortCount).multiply(BigDecimal.valueOf(-1)).multiply(multiples));
         BigDecimal subSum = newSum.subtract(sum);
 
         BigDecimal tradeFee = subSum.abs().multiply(BigDecimal.valueOf(0.01)).setScale(4, RoundingMode.HALF_DOWN);
