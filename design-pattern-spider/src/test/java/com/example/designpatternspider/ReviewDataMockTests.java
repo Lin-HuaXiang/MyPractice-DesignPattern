@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ReviewDataMockTests {
 
         static String period = "60min";
-        static String currency = "trxusdt";
+        static String currency = "filusdt";
         static String[] periods = { "1min", "5min", "15min", "60min", "4hour", "1day" };
 
     @Test
@@ -65,14 +65,14 @@ public class ReviewDataMockTests {
         UnilateralMarket unilateralMarket = new UnilateralMarket();
         unilateralMarket.load4HourData(currency);
         Map<String, String> marketStatusMap = unilateralMarket.getMarketStatusMap();
-        listData = listData.subList(listData.size() - 20, listData.size());
-        ReviewDataMock reviewDataMock = new ReviewDataMock(BigDecimal.valueOf(1), new ReviewDataMockMacd(), new ReviewDataMockRsi());
-        // ReviewDataMock reviewDataMock = new ReviewDataMock(BigDecimal.valueOf(1), new ReviewDataMockMacd());
-        // ReviewDataMock reviewDataMock = new ReviewDataMock(BigDecimal.valueOf(1), new ReviewDataMockRsi());
-        reviewDataMock.buildRepository(BigDecimal.valueOf(1000000));
+        listData = listData.subList(listData.size() - 40, listData.size());
+        ReviewDataMock reviewDataMock = new ReviewDataMock(BigDecimal.valueOf(5), new ReviewDataMockMacd(), new ReviewDataMockRsi());
+        // ReviewDataMock reviewDataMock = new ReviewDataMock(BigDecimal.valueOf(5), new ReviewDataMockMacd());
+        // ReviewDataMock reviewDataMock = new ReviewDataMock(BigDecimal.valueOf(5), new ReviewDataMockRsi());
+        reviewDataMock.buildRepository(BigDecimal.valueOf(1000));
         reviewDataMock.printResultMock(marketStatusMap, listData);
         // 4 hour macd, macd > 0 only open long, macd < 0 only open short.
         assertTrue(true);
     }
-
+  增加连续模式
 }

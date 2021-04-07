@@ -47,9 +47,7 @@ public class ReviewDataMockRsi extends ReviewDataMockIndicator {
             // log.info("rsi up cross");
             signalOpenLong = true;
             signalCloseShort = true;
-        }
-
-        if ((lastRsi9.compareTo(lastRsi72) >= 0 && calcRsi9.compareTo(calcRsi72) < 0)
+        } else if ((lastRsi9.compareTo(lastRsi72) >= 0 && calcRsi9.compareTo(calcRsi72) < 0)
                 || (latRsi12.compareTo(lastRsi72) >= 0 && calcRsi12.compareTo(calcRsi72) < 0)) {
             // log.info("rsi down cross");
             signalOpenShort = true;
@@ -61,17 +59,14 @@ public class ReviewDataMockRsi extends ReviewDataMockIndicator {
             // log.info("rsi touch highest");
             signalOpenShort = true;
             signalCloseLong = true;
-        }
-
-        // The heat is too high, need to adjust to MACD line drop
-        if (calcRsi9.divide(calcRsi72, 2, RoundingMode.HALF_DOWN).compareTo(BigDecimal.valueOf(0.55)) <= 0) {
+        } else if (calcRsi9.divide(calcRsi72, 2, RoundingMode.HALF_DOWN).compareTo(BigDecimal.valueOf(0.55)) <= 0) {
             // log.info("rsi touch lowest");
             signalOpenLong = true;
             signalCloseShort = true;
         }
 
         // reverse
-        log.info("P{} [9]{}->{} [12]{}->{} [14]{}->{} [72]{}->{}", price, lastRsi9, calcRsi9,  latRsi12, calcRsi12, latRsi14, calcRsi14, lastRsi72,
+        log.info("P{}->{} [9]{}->{} [12]{}->{} [14]{}->{} [72]{}->{}", lastPrice, price, lastRsi9, calcRsi9,  latRsi12, calcRsi12, latRsi14, calcRsi14, lastRsi72,
         calcRsi72);
 
         lastPrice = price;

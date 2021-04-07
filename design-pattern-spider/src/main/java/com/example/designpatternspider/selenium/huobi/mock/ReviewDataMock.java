@@ -55,8 +55,10 @@ public class ReviewDataMock {
             String status = marketStatusMap.get(key);
             if ("long".equals(status)) {
                 signal.setSignalOpenShort(false);
+                log.info("{} {}", key, "long");
             } else {
                 signal.setSignalOpenLong(false);
+                log.info("{} {}", key, "short");
             }
             getTotalEquity(reviewExport.getPrice());
             calcResultMock(signal);
@@ -114,8 +116,8 @@ public class ReviewDataMock {
 
         BigDecimal tradeFee = subSum.abs().multiply(BigDecimal.valueOf(0.01)).setScale(4, RoundingMode.HALF_DOWN);
         sum = newSum.subtract(tradeFee);
+        log.info("B{} T{} F{} L{} S{} P{}->{}", sum, subSum, tradeFee, longCount, shortCount, lastPrice, price);
         lastPrice = price;
-        log.info("B{} T{} F{} L{} S{}", sum, subSum, tradeFee, longCount, shortCount);
         max = max.compareTo(sum) > 0 ? max : sum;
         min = min.compareTo(sum) < 0 ? min : sum;
         return sum;
