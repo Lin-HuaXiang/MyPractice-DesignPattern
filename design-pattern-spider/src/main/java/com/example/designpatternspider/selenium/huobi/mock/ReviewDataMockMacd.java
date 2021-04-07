@@ -113,7 +113,7 @@ public class ReviewDataMockMacd extends ReviewDataMockIndicator {
         }
 
         // print
-        log.info("LP{}->P{} LDIF{}->DIF{} LMACD{}->MACD{}", lastPrice, price, lastDif, dif, lastMacd, macd);
+        log.info("P{}->{} DIF{}->{} MACD{}->{}", lastPrice, price, lastDif, dif, lastMacd, macd);
         lastDif = dif;
         lastMacd = macd;
         lastPrice = price;

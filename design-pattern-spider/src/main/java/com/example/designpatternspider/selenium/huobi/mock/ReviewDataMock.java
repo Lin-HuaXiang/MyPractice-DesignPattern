@@ -41,24 +41,23 @@ public class ReviewDataMock {
         for (ReviewExport reviewExport : reviewExports) {
             Signal signal = new Signal();
             String time = reviewExport.getTime().replace("-", "").replace(" ", "").replace(":", "");
+            Integer hour = Integer.valueOf(time.substring(time.length() - 6, time.length() - 4));
+            String day =  time.substring(0, time.length() - 6);
+            hour -= hour % 4;
+            String key = day + (hour > 9 ? hour : "0" + hour);
+            String status = marketStatusMap.get(key);
             log.info("T{}", time);
+            log.info("{} {}", key, status);
             for (ReviewDataMockIndicator reviewDataMockIndicator : reviewDataMockIndicators) {
                 Signal temp = reviewDataMockIndicator.calcMock(reviewExport);
                 // Signaling between different indicators
                 signal.unite(temp);
                 reviewDataMockIndicator.resetSignal();
             }
-            Integer hour = Integer.valueOf(time.substring(time.length() - 6, time.length() - 4));
-            String day =  time.substring(0, time.length() - 6);
-            hour -= hour % 4;
-            String key = day + (hour > 9 ? hour : "0" + hour);
-            String status = marketStatusMap.get(key);
             if ("long".equals(status)) {
                 signal.setSignalOpenShort(false);
-                log.info("{} {}", key, "long");
             } else {
                 signal.setSignalOpenLong(false);
-                log.info("{} {}", key, "short");
             }
             getTotalEquity(reviewExport.getPrice());
             calcResultMock(signal);

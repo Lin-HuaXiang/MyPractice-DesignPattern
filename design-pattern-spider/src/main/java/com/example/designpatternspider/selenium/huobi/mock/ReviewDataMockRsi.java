@@ -66,8 +66,7 @@ public class ReviewDataMockRsi extends ReviewDataMockIndicator {
         }
 
         // reverse
-        log.info("P{}->{} [9]{}->{} [12]{}->{} [14]{}->{} [72]{}->{}", lastPrice, price, lastRsi9, calcRsi9,  latRsi12, calcRsi12, latRsi14, calcRsi14, lastRsi72,
-        calcRsi72);
+        log.info("P{}->{} [9]{}->{} [12]{}->{} [72]{}->{}", lastPrice, price, lastRsi9, calcRsi9,  latRsi12, calcRsi12, lastRsi72, calcRsi72);
 
         lastPrice = price;
         lastRsi9 = calcRsi9;

@@ -66,7 +66,7 @@ public class ReviewDataMockTests {
         unilateralMarket.load4HourData(currency);
         Map<String, String> marketStatusMap = unilateralMarket.getMarketStatusMap();
         listData = listData.subList(listData.size() - 40, listData.size());
-        ReviewDataMock reviewDataMock = new ReviewDataMock(BigDecimal.valueOf(5), new ReviewDataMockMacd(), new ReviewDataMockRsi());
+        ReviewDataMock reviewDataMock = new ReviewDataMock(BigDecimal.valueOf(1), new ReviewDataMockMacd(), new ReviewDataMockRsi());
         // ReviewDataMock reviewDataMock = new ReviewDataMock(BigDecimal.valueOf(5), new ReviewDataMockMacd());
         // ReviewDataMock reviewDataMock = new ReviewDataMock(BigDecimal.valueOf(5), new ReviewDataMockRsi());
         reviewDataMock.buildRepository(BigDecimal.valueOf(1000));
@@ -74,5 +74,4 @@ public class ReviewDataMockTests {
         // 4 hour macd, macd > 0 only open long, macd < 0 only open short.
         assertTrue(true);
     }
-  增加连续模式
 }
