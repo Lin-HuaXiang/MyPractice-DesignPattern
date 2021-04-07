@@ -42,15 +42,15 @@ public class ReviewDataMockRsi extends ReviewDataMockIndicator {
             lastRsi72 = calcRsi72;
         }
 
-        if (lastRsi9.compareTo(lastRsi72) < 0 && calcRsi9.compareTo(calcRsi72) > 0
-                && calcRsi12.compareTo(calcRsi72) > 0) {
+        if ((lastRsi9.compareTo(lastRsi72) <= 0 && calcRsi9.compareTo(calcRsi72) > 0)
+                || (latRsi12.compareTo(lastRsi72) <= 0 && calcRsi12.compareTo(calcRsi72) > 0)) {
             // log.info("rsi up cross");
             signalOpenLong = true;
             signalCloseShort = true;
         }
 
-        if (lastRsi9.compareTo(lastRsi72) > 0 && calcRsi9.compareTo(calcRsi72) < 0
-                && calcRsi12.compareTo(calcRsi72) < 0) {
+        if ((lastRsi9.compareTo(lastRsi72) >= 0 && calcRsi9.compareTo(calcRsi72) < 0)
+                || (latRsi12.compareTo(lastRsi72) >= 0 && calcRsi12.compareTo(calcRsi72) < 0)) {
             // log.info("rsi down cross");
             signalOpenShort = true;
             signalCloseLong = true;
@@ -71,8 +71,14 @@ public class ReviewDataMockRsi extends ReviewDataMockIndicator {
         }
 
         // reverse
-        log.info("P{}LRN{}RN{}LRT{}RT{}LRS{}RS{}", price, lastRsi9, calcRsi9, latRsi12, calcRsi12, lastRsi72, calcRsi72);
+        log.info("P{} [9]{}->{} [12]{}->{} [14]{}->{} [72]{}->{}", price, lastRsi9, calcRsi9,  latRsi12, calcRsi12, latRsi14, calcRsi14, lastRsi72,
+        calcRsi72);
 
+        lastPrice = price;
+        lastRsi9 = calcRsi9;
+        latRsi12 = calcRsi12;
+        latRsi14 = calcRsi14;
+        lastRsi72 = calcRsi72;
         return new Signal(signalOpenLong, signalOpenShort, signalCloseLong, signalCloseShort);
 
     }

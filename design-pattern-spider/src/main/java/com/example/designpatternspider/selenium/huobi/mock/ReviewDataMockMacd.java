@@ -84,7 +84,9 @@ public class ReviewDataMockMacd extends ReviewDataMockIndicator {
 
         // print
         log.info("P{}LP{}D{}LD{}MA{}LMA{}", price, lastPrice, dif, lastDif, macd, lastMacd);
-
+        lastDif = dif;
+        lastMacd = macd;
+        lastPrice = price;
         return new Signal(signalOpenLong, signalOpenShort, signalCloseLong, signalCloseShort);
     }
 

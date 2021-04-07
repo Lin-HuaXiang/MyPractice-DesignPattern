@@ -61,7 +61,7 @@ public class ReviewDataMock {
             getTotalEquity(reviewExport.getPrice());
             calcResultMock(signal);
         }
-        log.info("MI{}MA{}", min, max);
+        log.info("MI{} MA{}", min, max);
     }
 
     private void calcResultMock(Signal signal) {
@@ -115,7 +115,7 @@ public class ReviewDataMock {
         BigDecimal tradeFee = subSum.abs().multiply(BigDecimal.valueOf(0.01)).setScale(4, RoundingMode.HALF_DOWN);
         sum = newSum.subtract(tradeFee);
         lastPrice = price;
-        log.info("B{}T{}F{}L{}S{}", sum, subSum, tradeFee, longCount, shortCount);
+        log.info("B{} T{} F{} L{} S{}", sum, subSum, tradeFee, longCount, shortCount);
         max = max.compareTo(sum) > 0 ? max : sum;
         min = min.compareTo(sum) < 0 ? min : sum;
         return sum;
