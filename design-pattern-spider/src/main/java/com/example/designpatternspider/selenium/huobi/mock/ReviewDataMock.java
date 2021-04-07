@@ -3,6 +3,7 @@ package com.example.designpatternspider.selenium.huobi.mock;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
+import java.util.Map;
 
 import com.example.designpatternspider.selenium.huobi.po.Signal;
 import com.example.designpatternspider.selenium.huobi.po.export.ReviewExport;
@@ -36,7 +37,7 @@ public class ReviewDataMock {
     private BigDecimal lastPrice;
     private BigDecimal multiples;
 
-    public void printResultMock(List<ReviewExport> reviewExports) {
+    public void printResultMock(Map<String, String> marketStatusMap, List<ReviewExport> reviewExports) {
         for (ReviewExport reviewExport : reviewExports) {
             Signal signal = new Signal();
             String time = reviewExport.getTime().replace("-", "").replace(" ", "").replace(":", "");
@@ -46,6 +47,16 @@ public class ReviewDataMock {
                 // Signaling between different indicators
                 signal.unite(temp);
                 reviewDataMockIndicator.resetSignal();
+            }
+            Integer hour = Integer.valueOf(time.substring(time.length() - 6, time.length() - 4));
+            String day =  time.substring(0, time.length() - 6);
+            hour -= hour % 4;
+            String key = day + (hour > 9 ? hour : "0" + hour);
+            String status = marketStatusMap.get(key);
+            if ("long".equals(status)) {
+                signal.setSignalOpenShort(false);
+            } else {
+                signal.setSignalOpenLong(false);
             }
             getTotalEquity(reviewExport.getPrice());
             calcResultMock(signal);
@@ -58,7 +69,7 @@ public class ReviewDataMock {
             openLong();
         }
         if (Boolean.TRUE.equals(signal.getSignalOpenShort())) {
-            // openShort();
+            openShort();
         }
         if (Boolean.TRUE.equals(signal.getSignalCloseLong())) {
             closeLong();

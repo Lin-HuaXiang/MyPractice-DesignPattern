@@ -5,7 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
+import com.example.designpatternspider.selenium.huobi.market.UnilateralMarket;
 import com.example.designpatternspider.selenium.huobi.mock.ReviewDataMock;
 import com.example.designpatternspider.selenium.huobi.mock.ReviewDataMockMacd;
 import com.example.designpatternspider.selenium.huobi.mock.ReviewDataMockRsi;
@@ -21,8 +23,8 @@ import lombok.extern.slf4j.Slf4j;
 @SpringBootTest
 public class ReviewDataMockTests {
 
-        static String period = "4hour";
-        static String currency = "btcusdt";
+        static String period = "60min";
+        static String currency = "trxusdt";
         static String[] periods = { "1min", "5min", "15min", "60min", "4hour", "1day" };
 
     @Test
@@ -60,13 +62,16 @@ public class ReviewDataMockTests {
         // // shock
         // listData = listData.subList(listData.size() - 100, listData.size() - 50);
         // unilateral market long
-        listData = listData.subList(listData.size() - 50, listData.size());
-        // ReviewDataMock reviewDataMock = new ReviewDataMock(BigDecimal.valueOf(1), new ReviewDataMockMacd(), new ReviewDataMockRsi());
+        UnilateralMarket unilateralMarket = new UnilateralMarket();
+        unilateralMarket.load4HourData(currency);
+        Map<String, String> marketStatusMap = unilateralMarket.getMarketStatusMap();
+        listData = listData.subList(listData.size() - 20, listData.size());
+        ReviewDataMock reviewDataMock = new ReviewDataMock(BigDecimal.valueOf(1), new ReviewDataMockMacd(), new ReviewDataMockRsi());
         // ReviewDataMock reviewDataMock = new ReviewDataMock(BigDecimal.valueOf(1), new ReviewDataMockMacd());
-        ReviewDataMock reviewDataMock = new ReviewDataMock(BigDecimal.valueOf(1), new ReviewDataMockRsi());
-        reviewDataMock.buildRepository(BigDecimal.valueOf(1));
-        reviewDataMock.printResultMock(listData);
-        
+        // ReviewDataMock reviewDataMock = new ReviewDataMock(BigDecimal.valueOf(1), new ReviewDataMockRsi());
+        reviewDataMock.buildRepository(BigDecimal.valueOf(1000000));
+        reviewDataMock.printResultMock(marketStatusMap, listData);
+        // 4 hour macd, macd > 0 only open long, macd < 0 only open short.
         assertTrue(true);
     }
 
