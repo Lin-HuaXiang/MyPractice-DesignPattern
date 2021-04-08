@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ReviewDataMockTests {
 
         static String period = "60min";
-        static String currency = "filusdt";
+        static String currency = "btcusdt";
         static String[] periods = { "1min", "5min", "15min", "60min", "4hour", "1day" };
 
     @Test
@@ -45,15 +45,6 @@ public class ReviewDataMockTests {
         assertTrue(true);
     }
 
-
-
-    @Test
-    public void testPrintData() throws Exception {
-        List<ReviewExport> listData = ReviewDataUtil.getLocalData(currency, period);
-        log.info("{}", listData.subList(listData.size() - 10, listData.size()));
-        assertTrue(true);
-    }
-
     @Test
     public void testCalcData() throws Exception {
         List<ReviewExport> listData = ReviewDataUtil.getLocalData(currency, period);
@@ -66,12 +57,15 @@ public class ReviewDataMockTests {
         unilateralMarket.load4HourData(currency);
         Map<String, String> marketStatusMap = unilateralMarket.getMarketStatusMap();
         listData = listData.subList(listData.size() - 40, listData.size());
-        ReviewDataMock reviewDataMock = new ReviewDataMock(BigDecimal.valueOf(1), new ReviewDataMockMacd(), new ReviewDataMockRsi());
+        ReviewDataMock reviewDataMock = new ReviewDataMock(BigDecimal.valueOf(5), new ReviewDataMockMacd(), new ReviewDataMockRsi());
         // ReviewDataMock reviewDataMock = new ReviewDataMock(BigDecimal.valueOf(5), new ReviewDataMockMacd());
         // ReviewDataMock reviewDataMock = new ReviewDataMock(BigDecimal.valueOf(5), new ReviewDataMockRsi());
-        reviewDataMock.buildRepository(BigDecimal.valueOf(1000));
+        reviewDataMock.buildRepository(BigDecimal.valueOf(100000));
         reviewDataMock.printResultMock(marketStatusMap, listData);
         // 4 hour macd, macd > 0 only open long, macd < 0 only open short.
+        // unilateral market, rsi indicator highest/lowest inoperative. how to judge unilateral market ?
+        // update excel data to calc 4 hour macd indicator, use for judge market status
+        // different market use for different indicator
         assertTrue(true);
     }
 }

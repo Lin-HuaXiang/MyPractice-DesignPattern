@@ -46,8 +46,8 @@ public class ReviewDataMock {
             hour -= hour % 4;
             String key = day + (hour > 9 ? hour : "0" + hour);
             String status = marketStatusMap.get(key);
-            log.info("T{}", time);
-            log.info("{} {}", key, status);
+            log.info("[T]{}", time);
+            log.info("[{}]{}", status.toUpperCase(), key);
             for (ReviewDataMockIndicator reviewDataMockIndicator : reviewDataMockIndicators) {
                 Signal temp = reviewDataMockIndicator.calcMock(reviewExport);
                 // Signaling between different indicators
@@ -62,7 +62,7 @@ public class ReviewDataMock {
             getTotalEquity(reviewExport.getPrice());
             calcResultMock(signal);
         }
-        log.info("MI{} MA{}", min, max);
+        log.info("[MI]{} [MA]{}", min, max);
     }
 
     private void calcResultMock(Signal signal) {
@@ -115,7 +115,7 @@ public class ReviewDataMock {
 
         BigDecimal tradeFee = subSum.abs().multiply(BigDecimal.valueOf(0.01)).setScale(4, RoundingMode.HALF_DOWN);
         sum = newSum.subtract(tradeFee);
-        log.info("B{} T{} F{} L{} S{} P{}->{}", sum, subSum, tradeFee, longCount, shortCount, lastPrice, price);
+        log.info("[B]{}[P]{}->{}[T]{}[F]{}[L]{}[S]{}", sum, lastPrice, price, subSum, tradeFee, longCount, shortCount);
         lastPrice = price;
         max = max.compareTo(sum) > 0 ? max : sum;
         min = min.compareTo(sum) < 0 ? min : sum;

@@ -54,19 +54,19 @@ public class ReviewDataMockRsi extends ReviewDataMockIndicator {
             signalCloseLong = true;
         }
 
-        // The heat is too high, need to adapt to the macd mac line drop
+        // // The heat is too high, need to adapt to the macd mac line drop
         if (calcRsi9.divide(calcRsi72, 2, RoundingMode.HALF_DOWN).compareTo(BigDecimal.valueOf(1.45)) >= 0) {
             // log.info("rsi touch highest");
-            signalOpenShort = true;
-            signalCloseLong = true;
+            // signalOpenShort = true;
+            // signalCloseLong = true;
         } else if (calcRsi9.divide(calcRsi72, 2, RoundingMode.HALF_DOWN).compareTo(BigDecimal.valueOf(0.55)) <= 0) {
             // log.info("rsi touch lowest");
-            signalOpenLong = true;
-            signalCloseShort = true;
+            // signalOpenLong = true;
+            // signalCloseShort = true;
         }
 
         // reverse
-        log.info("P{}->{} [9]{}->{} [12]{}->{} [72]{}->{}", lastPrice, price, lastRsi9, calcRsi9,  latRsi12, calcRsi12, lastRsi72, calcRsi72);
+        log.info("[9]{}->{}[12]{}->{}[72]{}->{}", lastPrice, price, lastRsi9, calcRsi9,  latRsi12, calcRsi12, lastRsi72, calcRsi72);
 
         lastPrice = price;
         lastRsi9 = calcRsi9;

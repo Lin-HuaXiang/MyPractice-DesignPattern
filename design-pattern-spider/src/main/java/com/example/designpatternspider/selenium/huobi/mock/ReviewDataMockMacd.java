@@ -85,7 +85,7 @@ public class ReviewDataMockMacd extends ReviewDataMockIndicator {
         }
 
 
-        // 如果连续三个相同符号，买入
+        // If three of the same symbols in a row, buy
 
         if (!macdSerial.offer(macd)) {
             macdSerial.remove();
@@ -96,12 +96,12 @@ public class ReviewDataMockMacd extends ReviewDataMockIndicator {
             BigDecimal num2 = macdSerial.poll();
             BigDecimal num3 = macdSerial.poll();
             if (num3.compareTo(num2) > 0 && num2.compareTo(num1) > 0 && num1.compareTo(BigDecimal.ZERO) > 0) {
-                // 买多，并且清空队列
+                // Buy long and empty the queue
                 signalOpenLong = true;
                 signalCloseShort = true;
                 log.info("three continuous buy long");
             } else if (num3.compareTo(num2) < 0 && num2.compareTo(num1) < 0 && num1.compareTo(BigDecimal.ZERO) < 0) {
-                // 买空，并且清空队列
+                // Buy short and empty the queue
                 signalCloseLong = true;
                 signalOpenShort = true;
                 log.info("three continuous buy short");
@@ -113,7 +113,7 @@ public class ReviewDataMockMacd extends ReviewDataMockIndicator {
         }
 
         // print
-        log.info("P{}->{} DIF{}->{} MACD{}->{}", lastPrice, price, lastDif, dif, lastMacd, macd);
+        log.info("[DIF]{}->{}[MACD]{}->{}", lastPrice, price, lastDif, dif, lastMacd, macd);
         lastDif = dif;
         lastMacd = macd;
         lastPrice = price;
