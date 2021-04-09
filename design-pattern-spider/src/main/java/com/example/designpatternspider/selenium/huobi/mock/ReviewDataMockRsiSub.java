@@ -13,7 +13,7 @@ import org.springframework.util.ObjectUtils;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class ReviewDataMockRsi extends ReviewDataMockIndicator {
+public class ReviewDataMockRsiSub extends ReviewDataMockIndicator {
 
     private BigDecimal lastRsi9;
     private BigDecimal latRsi12;
@@ -32,7 +32,6 @@ public class ReviewDataMockRsi extends ReviewDataMockIndicator {
         BigDecimal calcRsi72 = reviewExport.getCalcRsi72();
 
 
-
         if (ObjectUtils.isEmpty(calcRsi9) || ObjectUtils.isEmpty(calcRsi12) || ObjectUtils.isEmpty(calcRsi14)
                 || ObjectUtils.isEmpty(calcRsi72)) {
             return new Signal();
@@ -47,13 +46,17 @@ public class ReviewDataMockRsi extends ReviewDataMockIndicator {
             lastRsi72 = calcRsi72;
         }
 
-        if ((lastRsi9.compareTo(lastRsi72) <= 0 && calcRsi9.compareTo(calcRsi72) > 0)
-                || (latRsi12.compareTo(lastRsi72) <= 0 && calcRsi12.compareTo(calcRsi72) > 0)) {
+        if (
+            (lastRsi9.compareTo(lastRsi72) <= 0 && calcRsi9.compareTo(calcRsi72) > 0)
+                // (latRsi12.compareTo(lastRsi72) <= 0 && calcRsi12.compareTo(calcRsi72) > 0)) {
+                ) {
             // log.info("rsi up cross");
             signalOpenLong = true;
             signalCloseShort = true;
-        } else if ((lastRsi9.compareTo(lastRsi72) >= 0 && calcRsi9.compareTo(calcRsi72) < 0)
-                || (latRsi12.compareTo(lastRsi72) >= 0 && calcRsi12.compareTo(calcRsi72) < 0)) {
+        } else if (
+            (lastRsi9.compareTo(lastRsi72) >= 0 && calcRsi9.compareTo(calcRsi72) < 0)
+                //  (latRsi12.compareTo(lastRsi72) >= 0 && calcRsi12.compareTo(calcRsi72) < 0)) {
+                ) {
             // log.info("rsi down cross");
             signalOpenShort = true;
             signalCloseLong = true;
@@ -62,7 +65,7 @@ public class ReviewDataMockRsi extends ReviewDataMockIndicator {
         // // The heat is too high, need to adapt to the macd mac line drop
         if (calcRsi9.divide(calcRsi72, 2, RoundingMode.HALF_DOWN).compareTo(BigDecimal.valueOf(1.45)) >= 0) {
             log.info("rsi touch highest");
-            
+
             boolean offer = touchQueue.offer("high");
             if (!offer) {
                 touchQueue.poll();
@@ -72,9 +75,9 @@ public class ReviewDataMockRsi extends ReviewDataMockIndicator {
             if (!"high".equals(e1) && touchQueue.size() == 2) {
                 // Continuous highest, not open short
                 signalOpenShort = true;
-            } else if("high".equals(e1) && touchQueue.size() == 2) {
+            } else if ("high".equals(e1) && touchQueue.size() == 2) {
                 signalOpenLong = true;
-                // signalCloseShort = true;
+                signalCloseShort = true;
                 log.info("Continuous highest, open long, close short");
             }
         } else if (calcRsi9.divide(calcRsi72, 2, RoundingMode.HALF_DOWN).compareTo(BigDecimal.valueOf(0.55)) <= 0) {
@@ -89,9 +92,9 @@ public class ReviewDataMockRsi extends ReviewDataMockIndicator {
             if (!"low".equals(e1) && touchQueue.size() == 2) {
                 // Continuous lowest, not open short
                 signalOpenLong = true;
-            } else if("low".equals(e1) && touchQueue.size() == 2) {
+            } else if ("low".equals(e1) && touchQueue.size() == 2) {
                 signalOpenShort = true;
-                // signalCloseLong = true;
+                signalCloseLong = true;
                 log.info("Continuous lowest, open short, close long");
             }
         } else {

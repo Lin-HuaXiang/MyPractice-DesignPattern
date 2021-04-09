@@ -8,6 +8,7 @@ import java.util.Map;
 import com.example.designpatternspider.selenium.huobi.po.Signal;
 import com.example.designpatternspider.selenium.huobi.po.export.ReviewExport;
 
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import lombok.extern.slf4j.Slf4j;
@@ -47,18 +48,20 @@ public class ReviewDataMock {
             String key = day + (hour > 9 ? hour : "0" + hour);
             String status = marketStatusMap.get(key);
             log.info("[T]{}", time);
-            log.info("[{}]{}", status.toUpperCase(), key);
+            // log.info("[{}]{}", status.toUpperCase(), key);
             for (ReviewDataMockIndicator reviewDataMockIndicator : reviewDataMockIndicators) {
                 Signal temp = reviewDataMockIndicator.calcMock(reviewExport);
                 // Signaling between different indicators
                 signal.unite(temp);
                 reviewDataMockIndicator.resetSignal();
             }
-            if ("long".equals(status)) {
-                signal.setSignalOpenShort(false);
-            } else {
-                signal.setSignalOpenLong(false);
-            }
+            List<ReviewExport> lowerData = reviewExport.getLowerData();
+           lowerJudge(lowerData, reviewExport.getPrice(), signal);
+            // if ("long".equals(status)) {
+            //     signal.setSignalOpenShort(false);
+            // } else {
+            //     signal.setSignalOpenLong(false);
+            // }
             getTotalEquity(reviewExport.getPrice());
             calcResultMock(signal);
         }
@@ -120,6 +123,36 @@ public class ReviewDataMock {
         max = max.compareTo(sum) > 0 ? max : sum;
         min = min.compareTo(sum) < 0 ? min : sum;
         return sum;
+    }
+
+    public void lowerJudge(List<ReviewExport> lowerData, BigDecimal price, Signal signal) {
+        if (CollectionUtils.isEmpty(lowerData)) {
+            return;
+        }
+        for (ReviewExport reviewExport : lowerData) {
+            BigDecimal lowPrice = reviewExport.getPrice();
+            BigDecimal subtractPrice = price.subtract(lowPrice);
+            if (subtractPrice.compareTo(BigDecimal.ZERO) > 0) {
+                BigDecimal subSum = subtractPrice.multiply(shortCount).multiply(BigDecimal.valueOf(-1)).multiply(multiples);
+                if (subSum.compareTo(BigDecimal.ZERO) != 0 && subSum.divide(sum, 6, RoundingMode.HALF_DOWN).abs().compareTo(BigDecimal.valueOf(0.4)) > 0) {
+                    log.info("---[T]{}[P]{}->{} close short" , reviewExport.getTime(), price, lowPrice);
+                    signal.setSignalCloseShort(true);
+                    closeShort();
+                    getTotalEquity(lowPrice);
+                    break;
+                }
+            } else if (subtractPrice.compareTo(BigDecimal.ZERO) < 0) {
+                BigDecimal subSum = subtractPrice.multiply(longCount).multiply(BigDecimal.valueOf(1)).multiply(multiples);
+                if (subSum.compareTo(BigDecimal.ZERO) != 0 && subSum.divide(sum, 6, RoundingMode.HALF_DOWN).abs().compareTo(BigDecimal.valueOf(0.4)) > 0) {
+                    log.info("---[T]{}[P]{}->{} close long" , reviewExport.getTime(), price, lowPrice);
+                    signal.setSignalCloseLong(true);
+                    closeLong();
+                    getTotalEquity(lowPrice);
+                    break;
+                }
+            }
+
+        }
     }
 
 }

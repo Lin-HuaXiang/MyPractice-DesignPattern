@@ -1,6 +1,7 @@
 package com.example.designpatternspider.selenium.huobi.po.export;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 
@@ -42,4 +43,5 @@ public class ReviewExport {
     @ExcelProperty()
     private BigDecimal calcRsi72;
 
+    private List<ReviewExport> lowerData;
 }

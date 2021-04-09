@@ -203,7 +203,7 @@ public class ReviewDataUtil {
             // 1min
             HuobiOpenSpider.inputPeriod(driver, action, period);
             // 72
-            HuobiOpenSpider.inputSize(driver, action, "200");
+            HuobiOpenSpider.inputSize(driver, action, "300");
 
             HuobiOpenSpider.sendRequest(driver, action);
             HuoBiKline kline = HuobiOpenSpider.getData(driver);
