@@ -134,20 +134,20 @@ public class ReviewDataMock {
             BigDecimal subtractPrice = price.subtract(lowPrice);
             if (subtractPrice.compareTo(BigDecimal.ZERO) > 0) {
                 BigDecimal subSum = subtractPrice.multiply(shortCount).multiply(BigDecimal.valueOf(-1)).multiply(multiples);
-                if (subSum.compareTo(BigDecimal.ZERO) != 0 && subSum.divide(sum, 6, RoundingMode.HALF_DOWN).abs().compareTo(BigDecimal.valueOf(0.4)) > 0) {
+                if (subSum.compareTo(BigDecimal.ZERO) != 0 && subSum.divide(sum, 6, RoundingMode.HALF_DOWN).abs().compareTo(BigDecimal.valueOf(0.2)) > 0) {
                     log.info("---[T]{}[P]{}->{} close short" , reviewExport.getTime(), price, lowPrice);
                     signal.setSignalCloseShort(true);
-                    closeShort();
                     getTotalEquity(lowPrice);
+                    closeShort();
                     break;
                 }
             } else if (subtractPrice.compareTo(BigDecimal.ZERO) < 0) {
                 BigDecimal subSum = subtractPrice.multiply(longCount).multiply(BigDecimal.valueOf(1)).multiply(multiples);
-                if (subSum.compareTo(BigDecimal.ZERO) != 0 && subSum.divide(sum, 6, RoundingMode.HALF_DOWN).abs().compareTo(BigDecimal.valueOf(0.4)) > 0) {
+                if (subSum.compareTo(BigDecimal.ZERO) != 0 && subSum.divide(sum, 6, RoundingMode.HALF_DOWN).abs().compareTo(BigDecimal.valueOf(0.2)) > 0) {
                     log.info("---[T]{}[P]{}->{} close long" , reviewExport.getTime(), price, lowPrice);
                     signal.setSignalCloseLong(true);
-                    closeLong();
                     getTotalEquity(lowPrice);
+                    closeLong();
                     break;
                 }
             }

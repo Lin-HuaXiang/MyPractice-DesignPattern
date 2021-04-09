@@ -11,7 +11,6 @@ import com.example.designpatternspider.selenium.huobi.market.UnilateralMarket;
 import com.example.designpatternspider.selenium.huobi.mock.ReviewDataMock;
 import com.example.designpatternspider.selenium.huobi.mock.ReviewDataMockMacd;
 import com.example.designpatternspider.selenium.huobi.mock.ReviewDataMockRsi;
-import com.example.designpatternspider.selenium.huobi.mock.ReviewDataMockRsi01;
 import com.example.designpatternspider.selenium.huobi.mock.ReviewDataMockRsiSub;
 import com.example.designpatternspider.selenium.huobi.po.export.ReviewExport;
 import com.example.designpatternspider.selenium.huobi.util.MergeDataUtil;
@@ -27,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ReviewDataMockTests {
 
         static String period = "60min";
-        static String currency = "btcusdt";
+        static String currency = "trxusdt";
         static String[] periods = { "1min", "5min", "15min", "60min", "4hour", "1day" };
 
     @Test
@@ -63,8 +62,8 @@ public class ReviewDataMockTests {
         MergeDataUtil.mergeLowerData(listData, currency, period);
         // ReviewDataMock reviewDataMock = new ReviewDataMock(BigDecimal.valueOf(5), new ReviewDataMockMacd(), new ReviewDataMockRsi());
         // ReviewDataMock reviewDataMock = new ReviewDataMock(BigDecimal.valueOf(5), new ReviewDataMockMacd());
-        ReviewDataMock reviewDataMock = new ReviewDataMock(BigDecimal.valueOf(5), new ReviewDataMockRsiSub());
-        reviewDataMock.buildRepository(BigDecimal.valueOf(3));
+        ReviewDataMock reviewDataMock = new ReviewDataMock(BigDecimal.valueOf(75), new ReviewDataMockRsiSub());
+        reviewDataMock.buildRepository(BigDecimal.valueOf(300000));
         reviewDataMock.printResultMock(marketStatusMap, listData);
         // 4 hour macd, macd > 0 only open long, macd < 0 only open short.
         // unilateral market, rsi indicator highest/lowest inoperative. how to judge unilateral market ?
