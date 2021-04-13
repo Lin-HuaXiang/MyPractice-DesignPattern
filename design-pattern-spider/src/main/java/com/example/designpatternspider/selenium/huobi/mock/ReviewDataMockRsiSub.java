@@ -63,7 +63,7 @@ public class ReviewDataMockRsiSub extends ReviewDataMockIndicator {
         }
 
         // // The heat is too high, need to adapt to the macd mac line drop
-        if (calcRsi9.divide(calcRsi72, 2, RoundingMode.HALF_DOWN).compareTo(BigDecimal.valueOf(1.45)) >= 0) {
+        if (calcRsi9.divide(calcRsi72, 2, RoundingMode.HALF_DOWN).compareTo(BigDecimal.valueOf(1.2)) >= 0) {
             log.info("rsi touch highest");
 
             boolean offer = touchQueue.offer("high");
@@ -80,7 +80,7 @@ public class ReviewDataMockRsiSub extends ReviewDataMockIndicator {
                 signalCloseShort = true;
                 log.info("Continuous highest, open long, close short");
             }
-        } else if (calcRsi9.divide(calcRsi72, 2, RoundingMode.HALF_DOWN).compareTo(BigDecimal.valueOf(0.55)) <= 0) {
+        } else if (calcRsi9.divide(calcRsi72, 2, RoundingMode.HALF_DOWN).compareTo(BigDecimal.valueOf(0.8)) <= 0) {
             log.info("rsi touch lowest");
             // Continuous bottom, not open long
             boolean offer = touchQueue.offer("low");

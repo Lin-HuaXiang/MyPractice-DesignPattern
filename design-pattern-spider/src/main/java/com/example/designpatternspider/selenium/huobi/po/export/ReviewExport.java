@@ -23,6 +23,10 @@ public class ReviewExport {
     @ExcelProperty()
     private BigDecimal close;
     @ExcelProperty()
+    private BigDecimal low;
+    @ExcelProperty()
+    private BigDecimal high;
+    @ExcelProperty()
     private BigDecimal macd;
     @ExcelProperty()
     private BigDecimal dif;

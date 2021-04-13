@@ -26,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ReviewDataMockTests {
 
         static String period = "60min";
-        static String currency = "trxusdt";
+        static String currency = "xrpusdt";
         static String[] periods = { "1min", "5min", "15min", "60min", "4hour", "1day" };
 
     @Test
@@ -55,16 +55,18 @@ public class ReviewDataMockTests {
         // // shock
         // listData = listData.subList(listData.size() - 100, listData.size() - 50);
         // unilateral market long
-        UnilateralMarket unilateralMarket = new UnilateralMarket();
-        unilateralMarket.load4HourData(currency);
-        Map<String, String> marketStatusMap = unilateralMarket.getMarketStatusMap();
-        listData = listData.subList(listData.size() - 50, listData.size());
+        // UnilateralMarket unilateralMarket = new UnilateralMarket();
+        // unilateralMarket.load4HourData(currency);
+        // Map<String, String> marketStatusMap = unilateralMarket.getMarketStatusMap();
+        listData = listData.subList(listData.size() - 50, listData.size() - 0);
         MergeDataUtil.mergeLowerData(listData, currency, period);
         // ReviewDataMock reviewDataMock = new ReviewDataMock(BigDecimal.valueOf(5), new ReviewDataMockMacd(), new ReviewDataMockRsi());
         // ReviewDataMock reviewDataMock = new ReviewDataMock(BigDecimal.valueOf(5), new ReviewDataMockMacd());
-        ReviewDataMock reviewDataMock = new ReviewDataMock(BigDecimal.valueOf(75), new ReviewDataMockRsiSub());
-        reviewDataMock.buildRepository(BigDecimal.valueOf(300000));
-        reviewDataMock.printResultMock(marketStatusMap, listData);
+        ReviewDataMock reviewDataMock = new ReviewDataMock(BigDecimal.valueOf(50), new ReviewDataMockRsiSub());
+        reviewDataMock.setSum(BigDecimal.valueOf(180));
+        reviewDataMock.buildRepository(BigDecimal.valueOf(20));
+        reviewDataMock.setVolume(BigDecimal.valueOf(3));
+        reviewDataMock.printResultMock(listData);
         // 4 hour macd, macd > 0 only open long, macd < 0 only open short.
         // unilateral market, rsi indicator highest/lowest inoperative. how to judge unilateral market ?
         // update excel data to calc 4 hour macd indicator, use for judge market status

@@ -25,11 +25,11 @@ public class MergeDataUtil {
             long nextTime = Long.parseLong(listData.get(i - 1).getTime().replace("-", "").replace(" ", "").replace(":", ""));
             for (ReviewExport lower : lowerListData) {
                 long lowerTime = Long.parseLong(lower.getTime().replace("-", "").replace(" ", "").replace(":", ""));
-                if (lowerTime >= nextTime && time > lowerTime) {
-                    List<ReviewExport> lowerData = listData.get(i).getLowerData();
+                if (lowerTime > nextTime && lowerTime < time) {
+                    List<ReviewExport> lowerData = listData.get(i - 1).getLowerData();
                     lowerData = Optional.ofNullable(lowerData).orElse(new ArrayList<>());
                     lowerData.add(lower);
-                    listData.get(i).setLowerData(lowerData);
+                    listData.get(i - 1).setLowerData(lowerData);
                 }
             }
         }

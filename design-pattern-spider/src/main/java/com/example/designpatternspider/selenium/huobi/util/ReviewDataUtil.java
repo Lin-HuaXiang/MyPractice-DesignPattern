@@ -79,7 +79,7 @@ public class ReviewDataUtil {
         Boolean bool = false;
         ReviewExport re;
 
-        bool = calcMACD(listData, bool);
+        // bool = calcMACD(listData, bool);
 
         bool = calcRSI(listData, bool);
 
@@ -203,7 +203,7 @@ public class ReviewDataUtil {
             // 1min
             HuobiOpenSpider.inputPeriod(driver, action, period);
             // 72
-            HuobiOpenSpider.inputSize(driver, action, "300");
+            HuobiOpenSpider.inputSize(driver, action, "2000");
 
             HuobiOpenSpider.sendRequest(driver, action);
             HuoBiKline kline = HuobiOpenSpider.getData(driver);
@@ -223,6 +223,8 @@ public class ReviewDataUtil {
                 reviewExport.setPrice(data.getClose());
                 reviewExport.setClose(data.getClose());
                 reviewExport.setOpen(data.getOpen());
+                reviewExport.setLow(data.getLow());
+                reviewExport.setHigh(data.getHigh());
                 reviewExport.setTime(data.getTime());
                 if (dataList.size() - 1 == i) {
                     reviewExport.setMacd(BigDecimal.ZERO);
