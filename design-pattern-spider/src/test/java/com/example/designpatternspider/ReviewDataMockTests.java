@@ -62,7 +62,7 @@ public class ReviewDataMockTests {
         MergeDataUtil.mergeLowerData(listData, currency, period);
         // ReviewDataMock reviewDataMock = new ReviewDataMock(BigDecimal.valueOf(5), new ReviewDataMockMacd(), new ReviewDataMockRsi());
         // ReviewDataMock reviewDataMock = new ReviewDataMock(BigDecimal.valueOf(5), new ReviewDataMockMacd());
-        ReviewDataMock reviewDataMock = new ReviewDataMock(BigDecimal.valueOf(50), new ReviewDataMockRsiSub());
+        ReviewDataMock reviewDataMock = new ReviewDataMock(BigDecimal.valueOf(5), new ReviewDataMockRsiSub());
         reviewDataMock.setSum(BigDecimal.valueOf(180));
         reviewDataMock.buildRepository(BigDecimal.valueOf(20));
         reviewDataMock.setVolume(BigDecimal.valueOf(3));

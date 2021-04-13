@@ -124,34 +124,33 @@ public class ReviewDataMock {
         if (ObjectUtils.isEmpty(lastPrice)) {
             lastPrice = price;
         }
-        BigDecimal subtractPrice = price.subtract(lastPrice);
+        
         BigDecimal temp = sum;
-        BigDecimal newSum = sum.add(subtractPrice.multiply(longCount))
-                .add(subtractPrice.multiply(shortCount).multiply(BigDecimal.valueOf(-1)));
-        BigDecimal subSum = newSum.subtract(sum);
+
+        BigDecimal longVolumeMulti = longCount.multiply(BigDecimal.TEN);
+        BigDecimal longSubMarginBalance = longVolumeMulti.divide(lastPrice, 6, RoundingMode.HALF_DOWN)
+                .subtract(longVolumeMulti.divide(price, 6, RoundingMode.HALF_DOWN));
+
+        BigDecimal shortVolumeMulti = shortCount.multiply(BigDecimal.TEN);
+        BigDecimal shortSubMarginBalance = shortVolumeMulti.divide(price, 6, RoundingMode.HALF_DOWN)
+                .subtract(shortVolumeMulti.divide(lastPrice, 6, RoundingMode.HALF_DOWN));
+
+        BigDecimal subSum = longSubMarginBalance.add(shortSubMarginBalance);
         BigDecimal tradeFee = subSum.abs().multiply(BigDecimal.valueOf(0.01)).setScale(4, RoundingMode.HALF_DOWN);
-        sum = newSum.subtract(tradeFee);
-
-        subtractPrice = price.subtract(low);
-        BigDecimal lowSum = temp.add(subtractPrice.multiply(longCount))
-        .add(subtractPrice.multiply(shortCount).multiply(BigDecimal.valueOf(-1)));
-
-        subtractPrice = price.subtract(high);
-        BigDecimal highSum = temp.add(subtractPrice.multiply(longCount))
-        .add(subtractPrice.multiply(shortCount).multiply(BigDecimal.valueOf(-1)));
+        sum = sum.add(subSum).subtract(tradeFee);
 
         if (max == null) {
-            max = highSum;
+            max = sum;
         }
+        
         if (min == null) {
-            min = lowSum;
+            min = sum;
         }
 
-
-        List<BigDecimal> asList1 = Arrays.asList(sum, lowSum, highSum);
-        log.info("[B]{}[P]{}->{}[MI]{}[MA]{}[L]{}[S]{}", sum, lastPrice, price, Collections.min(asList1), Collections.max(asList1), longCount, shortCount);
+        // List<BigDecimal> asList1 = Arrays.asList(sum, 0.0, 0);
+        log.info("[B]{}[P]{}->{}[LB]{}[SB]{}[L]{}[S]{}", sum, lastPrice, price, longSubMarginBalance, shortSubMarginBalance, longCount, shortCount);
         lastPrice = price;
-        List<BigDecimal> asList2 = Arrays.asList(max, min, sum, lowSum, highSum);
+        List<BigDecimal> asList2 = Arrays.asList(max, min, sum);
         max = Collections.max(asList2);
         min = Collections.min(asList2);
         return sum;
@@ -165,18 +164,23 @@ public class ReviewDataMock {
             BigDecimal lowPrice = reviewExport.getPrice();
             BigDecimal subtractPrice = price.subtract(lowPrice);
             if (subtractPrice.compareTo(BigDecimal.ZERO) > 0) {
-                BigDecimal subSum = subtractPrice.multiply(shortCount).multiply(BigDecimal.valueOf(-1));
-                if (subSum.compareTo(BigDecimal.ZERO) != 0 && subSum.divide(sum, 6, RoundingMode.HALF_DOWN).abs().compareTo(BigDecimal.valueOf(0.2)) > 0) {
-                    log.info("---[T]{} [B]{} [SUB]{}  [P]{}->{} [L]{}[S]{} close short" , reviewExport.getTime(), sum, subSum , price, lowPrice, longCount, shortCount);
+                BigDecimal shortVolumeMulti = shortCount.multiply(BigDecimal.TEN);
+                BigDecimal subMarginBalance = shortVolumeMulti.divide(price, 6, RoundingMode.HALF_DOWN)
+                        .subtract(shortVolumeMulti.divide(lowPrice, 6, RoundingMode.HALF_DOWN));
+                if (subMarginBalance.compareTo(BigDecimal.ZERO) != 0
+                        && subMarginBalance.divide(sum, 6, RoundingMode.HALF_DOWN).abs().compareTo(BigDecimal.valueOf(0.15)) > 0) {
+                    log.info("---[T]{} [B]{} [SUB]{}  [P]{}->{} [L]{}[S]{} close short" , reviewExport.getTime(), sum, subMarginBalance.abs() , price, lowPrice, longCount, shortCount);
                     signal.setSignalCloseShort(true);
                     getTotalEquity(reviewExport.getPrice(), reviewExport.getLow(), reviewExport.getHigh());
                     closeShort();
                     break;
                 }
             } else if (subtractPrice.compareTo(BigDecimal.ZERO) < 0) {
-                BigDecimal subSum = subtractPrice.multiply(longCount).multiply(BigDecimal.valueOf(1));
-                if (subSum.compareTo(BigDecimal.ZERO) != 0 && subSum.divide(sum, 6, RoundingMode.HALF_DOWN).abs().compareTo(BigDecimal.valueOf(0.2)) > 0) {
-                    log.info("---[T]{} [B]{} [SUB]{}  [P]{}->{} [L]{}[S]{} close long" , reviewExport.getTime(), sum, subSum, price, lowPrice, longCount, shortCount);
+                BigDecimal shortVolumeMulti = longCount.multiply(BigDecimal.TEN);
+                BigDecimal subMarginBalance = shortVolumeMulti.divide(price, 6, RoundingMode.HALF_DOWN)
+                        .subtract(shortVolumeMulti.divide(lowPrice, 6, RoundingMode.HALF_DOWN));
+                if (subMarginBalance.compareTo(BigDecimal.ZERO) != 0 && subMarginBalance.divide(sum, 6, RoundingMode.HALF_DOWN).abs().compareTo(BigDecimal.valueOf(0.15)) > 0) {
+                    log.info("---[T]{} [B]{} [SUB]{}  [P]{}->{} [L]{}[S]{} close long" , reviewExport.getTime(), sum, subMarginBalance.abs(), price, lowPrice, longCount, shortCount);
                     signal.setSignalCloseLong(true);
                     getTotalEquity(reviewExport.getPrice(), reviewExport.getLow(), reviewExport.getHigh());
                     closeLong();
