@@ -15,6 +15,8 @@ import lombok.NoArgsConstructor;
 public class ReviewExport {
 
     @ExcelProperty()
+    private Long id;
+    @ExcelProperty()
     private String time;
     @ExcelProperty()
     private BigDecimal price;

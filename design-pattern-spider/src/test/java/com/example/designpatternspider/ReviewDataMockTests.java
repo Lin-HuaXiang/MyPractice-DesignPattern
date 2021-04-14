@@ -25,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @SpringBootTest
 public class ReviewDataMockTests {
 
-        static String period = "60min";
+        static String period = "15min";
         static String currency = "xrpusdt";
         static String[] periods = { "1min", "5min", "15min", "60min", "4hour", "1day" };
 
@@ -78,6 +78,8 @@ public class ReviewDataMockTests {
         // level signal, judge open close signal.  e.g. macd three continual signal more than rsi highest and lowest.
         // multi indicator version, Identify the pros and cons of different versions
         // Fast slow pointer, stop closer than 20 per cent, merge lower level data.
+        // Simulate the optimal currency. no hurry.
+        // Time period shift
         assertTrue(true);
     }
 }
