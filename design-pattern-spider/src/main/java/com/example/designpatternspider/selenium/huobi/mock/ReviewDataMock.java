@@ -5,10 +5,12 @@ import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import com.example.designpatternspider.selenium.huobi.po.Signal;
 import com.example.designpatternspider.selenium.huobi.po.export.ReviewExport;
 
+import org.apache.poi.xwpf.usermodel.BreakClear;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
@@ -46,8 +48,12 @@ public class ReviewDataMock {
     private BigDecimal multiples = BigDecimal.ONE;
     private BigDecimal volume;
 
-    public void printResultMock(List<ReviewExport> reviewExports) {
+    public void printResultMock(Map<String, String> marketStatusMap, List<ReviewExport> reviewExports) {
         for (ReviewExport reviewExport : reviewExports) {
+            if (min != null && min.compareTo(BigDecimal.ZERO) < 0) {
+                log.info("broken repository");
+                break;
+            }
             Signal signal = new Signal();
             String time = reviewExport.getTime().replace("-", "").replace(" ", "").replace(":", "");
             log.info("[T]{}", time);
@@ -61,7 +67,9 @@ public class ReviewDataMock {
             getTotalEquity(reviewExport.getPrice(), reviewExport.getLow(), reviewExport.getHigh());
             calcResultMock(signal);
             List<ReviewExport> lowerData = reviewExport.getLowerData();
+            signal = new Signal();
            lowerJudge(lowerData, reviewExport.getPrice(), signal);
+           calcResultMock(signal);
             
         }
         log.info("[MI]{} [MA]{}", min, max);
@@ -128,10 +136,29 @@ public class ReviewDataMock {
         BigDecimal temp = sum;
 
         BigDecimal longVolumeMulti = longCount.multiply(BigDecimal.TEN);
+        BigDecimal shortVolumeMulti = shortCount.multiply(BigDecimal.TEN);
+
+        BigDecimal lowLongSubMarginBalance = longVolumeMulti.divide(lastPrice, 6, RoundingMode.HALF_DOWN)
+                .subtract(longVolumeMulti.divide(low, 6, RoundingMode.HALF_DOWN));
+
+        BigDecimal lowShortSubMarginBalance = shortVolumeMulti.divide(low, 6, RoundingMode.HALF_DOWN)
+                .subtract(shortVolumeMulti.divide(lastPrice, 6, RoundingMode.HALF_DOWN));
+
+        BigDecimal lowMarginBalance = temp.add(lowLongSubMarginBalance).add(lowShortSubMarginBalance);
+
+
+        BigDecimal highLongSubMarginBalance = longVolumeMulti.divide(lastPrice, 6, RoundingMode.HALF_DOWN)
+                .subtract(longVolumeMulti.divide(high, 6, RoundingMode.HALF_DOWN));
+
+        BigDecimal highShortSubMarginBalance = shortVolumeMulti.divide(high, 6, RoundingMode.HALF_DOWN)
+                .subtract(shortVolumeMulti.divide(lastPrice, 6, RoundingMode.HALF_DOWN));
+
+
+        BigDecimal highMarginBalance = temp.add(highLongSubMarginBalance).add(highShortSubMarginBalance);
+
         BigDecimal longSubMarginBalance = longVolumeMulti.divide(lastPrice, 6, RoundingMode.HALF_DOWN)
                 .subtract(longVolumeMulti.divide(price, 6, RoundingMode.HALF_DOWN));
 
-        BigDecimal shortVolumeMulti = shortCount.multiply(BigDecimal.TEN);
         BigDecimal shortSubMarginBalance = shortVolumeMulti.divide(price, 6, RoundingMode.HALF_DOWN)
                 .subtract(shortVolumeMulti.divide(lastPrice, 6, RoundingMode.HALF_DOWN));
 
@@ -147,10 +174,10 @@ public class ReviewDataMock {
             min = sum;
         }
 
-        // List<BigDecimal> asList1 = Arrays.asList(sum, 0.0, 0);
-        log.info("[B]{}[P]{}->{}[LB]{}[SB]{}[L]{}[S]{}", sum, lastPrice, price, longSubMarginBalance, shortSubMarginBalance, longCount, shortCount);
+        List<BigDecimal> asList1 = Arrays.asList(sum, lowMarginBalance, highMarginBalance);
+        log.info("[B]{}[P]{}->{}[MI]{} {}[MA]{} {}[L]{}[S]{}", sum, lastPrice, price, low, Collections.min(asList1), high, Collections.max(asList1), longCount, shortCount);
         lastPrice = price;
-        List<BigDecimal> asList2 = Arrays.asList(max, min, sum);
+        List<BigDecimal> asList2 = Arrays.asList(max, min, sum, lowMarginBalance, highMarginBalance);
         max = Collections.max(asList2);
         min = Collections.min(asList2);
         return sum;
@@ -163,6 +190,7 @@ public class ReviewDataMock {
         for (ReviewExport reviewExport : lowerData) {
             BigDecimal lowPrice = reviewExport.getPrice();
             BigDecimal subtractPrice = price.subtract(lowPrice);
+
             if (subtractPrice.compareTo(BigDecimal.ZERO) > 0) {
                 BigDecimal shortVolumeMulti = shortCount.multiply(BigDecimal.TEN);
                 BigDecimal subMarginBalance = shortVolumeMulti.divide(price, 6, RoundingMode.HALF_DOWN)
@@ -173,6 +201,7 @@ public class ReviewDataMock {
                     signal.setSignalCloseShort(true);
                     getTotalEquity(reviewExport.getPrice(), reviewExport.getLow(), reviewExport.getHigh());
                     closeShort();
+                    closeLong();
                     break;
                 }
             } else if (subtractPrice.compareTo(BigDecimal.ZERO) < 0) {
@@ -183,6 +212,7 @@ public class ReviewDataMock {
                     log.info("---[T]{} [B]{} [SUB]{}  [P]{}->{} [L]{}[S]{} close long" , reviewExport.getTime(), sum, subMarginBalance.abs(), price, lowPrice, longCount, shortCount);
                     signal.setSignalCloseLong(true);
                     getTotalEquity(reviewExport.getPrice(), reviewExport.getLow(), reviewExport.getHigh());
+                    closeShort();
                     closeLong();
                     break;
                 }

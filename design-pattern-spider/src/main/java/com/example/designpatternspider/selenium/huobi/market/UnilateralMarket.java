@@ -1,6 +1,7 @@
 package com.example.designpatternspider.selenium.huobi.market;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,12 +23,22 @@ public class UnilateralMarket implements MarketStrategy {
     }
 
     public void load4HourData(String currency) {
+        String value = "";
         List<ReviewExport> listData = ReviewDataUtil.getLocalData(currency, period);
         Map<String, String>  newMarketStatusMap = new HashMap<>();
         for (ReviewExport reviewExport : listData) {
             String key = reviewExport.getTime().replace("-", "").replace(" ", "").replace(":", "");
             key = key.substring(0, key.length() - 4);
-            String value = reviewExport.getMacd().compareTo(BigDecimal.ZERO) > 0 ? "long" : "short";
+            if (reviewExport.getCalcRsi72() == null || reviewExport.getCalcRsi14()  == null || reviewExport.getCalcRsi9()  == null || reviewExport.getCalcRsi12()  == null) {
+                continue;
+            }
+            if (reviewExport.getCalcRsi9().divide(reviewExport.getCalcRsi72(), 2, RoundingMode.HALF_DOWN).compareTo(BigDecimal.valueOf(1.05)) >= 0) {
+                value = "long";
+            } else if (reviewExport.getCalcRsi9().divide(reviewExport.getCalcRsi72(), 2, RoundingMode.HALF_DOWN).compareTo(BigDecimal.valueOf(0.95)) <= 0) {
+                value = "short";
+            } else {
+                value = "wait";
+            }
             newMarketStatusMap.put(key, value);
         }
         this.marketStatusMap = newMarketStatusMap;
