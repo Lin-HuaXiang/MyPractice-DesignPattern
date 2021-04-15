@@ -175,7 +175,7 @@ public class ReviewDataMock {
         }
 
         List<BigDecimal> asList1 = Arrays.asList(sum, lowMarginBalance, highMarginBalance);
-        log.info("[B]{}[P]{}->{}[MI]{} {}[MA]{} {}[L]{}[S]{}", sum, lastPrice, price, low, Collections.min(asList1), high, Collections.max(asList1), longCount, shortCount);
+        log.info("[B]{}_{}[P]{}->{}[MI]{} {}[MA]{} {}[L]{}[S]{}", sum,subSum, lastPrice, price, low, Collections.min(asList1), high, Collections.max(asList1), longCount, shortCount);
         lastPrice = price;
         List<BigDecimal> asList2 = Arrays.asList(max, min, sum, lowMarginBalance, highMarginBalance);
         max = Collections.max(asList2);

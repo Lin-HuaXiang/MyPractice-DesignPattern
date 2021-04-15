@@ -46,24 +46,24 @@ public class ReviewDataMockRsiSub extends ReviewDataMockIndicator {
             lastRsi72 = calcRsi72;
         }
 
-        // if (
-        //     (lastRsi9.compareTo(lastRsi72) <= 0 && calcRsi9.compareTo(calcRsi72) > 0)
-        //         // (latRsi12.compareTo(lastRsi72) <= 0 && calcRsi12.compareTo(calcRsi72) > 0)) {
-        //         ) {
-        //     // log.info("rsi up cross");
-        //     signalOpenLong = true;
-        //     signalCloseShort = true;
-        // } else if (
-        //     (lastRsi9.compareTo(lastRsi72) >= 0 && calcRsi9.compareTo(calcRsi72) < 0)
-        //         //  (latRsi12.compareTo(lastRsi72) >= 0 && calcRsi12.compareTo(calcRsi72) < 0)) {
-        //         ) {
-        //     // log.info("rsi down cross");
-        //     signalOpenShort = true;
-        //     signalCloseLong = true;
-        // }
+        if (
+            (lastRsi9.compareTo(lastRsi72) <= 0 && calcRsi9.compareTo(calcRsi72) > 0)
+                // (latRsi12.compareTo(lastRsi72) <= 0 && calcRsi12.compareTo(calcRsi72) > 0)) {
+                ) {
+            // log.info("rsi up cross");
+            signalOpenLong = true;
+            signalCloseShort = true;
+        } else if (
+            (lastRsi9.compareTo(lastRsi72) >= 0 && calcRsi9.compareTo(calcRsi72) < 0)
+                //  (latRsi12.compareTo(lastRsi72) >= 0 && calcRsi12.compareTo(calcRsi72) < 0)) {
+                ) {
+            // log.info("rsi down cross");
+            signalOpenShort = true;
+            signalCloseLong = true;
+        }
 
         // // The heat is too high, need to adapt to the macd mac line drop
-        if (calcRsi9.divide(calcRsi72, 2, RoundingMode.HALF_DOWN).compareTo(BigDecimal.valueOf(1.1)) >= 0) {
+        if (calcRsi9.divide(calcRsi72, 2, RoundingMode.HALF_DOWN).compareTo(BigDecimal.valueOf(1.3)) >= 0) {
             
 
             boolean offer = touchQueue.offer("high");
@@ -80,7 +80,7 @@ public class ReviewDataMockRsiSub extends ReviewDataMockIndicator {
                 signalCloseShort = true;
                 log.info("Continuous high, open long, close short");
             }
-        } else if (calcRsi9.divide(calcRsi72, 2, RoundingMode.HALF_DOWN).compareTo(BigDecimal.valueOf(0.9)) <= 0) {
+        } else if (calcRsi9.divide(calcRsi72, 2, RoundingMode.HALF_DOWN).compareTo(BigDecimal.valueOf(0.7)) <= 0) {
             
             // Continuous bottom, not open long
             boolean offer = touchQueue.offer("low");

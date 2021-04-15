@@ -109,7 +109,7 @@ public class ReviewDataUtil {
         return bool;
     }
 
-    private static Boolean calcRSI(List<ReviewExport> listData, Boolean bool) {
+    public static Boolean calcRSI(List<ReviewExport> listData, Boolean bool) {
         ReviewExport re;
         // calculate ris
         for (int i = listData.size() - 1; i >= 0; i--) {

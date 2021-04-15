@@ -14,39 +14,39 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ReviewExport {
 
-    @ExcelProperty()
+    @ExcelProperty(value = "id")
     private Long id;
-    @ExcelProperty()
+    @ExcelProperty(value = "time")
     private String time;
-    @ExcelProperty()
+    @ExcelProperty(value = "price")
     private BigDecimal price;
-    @ExcelProperty()
+    @ExcelProperty(value = "open")
     private BigDecimal open;
-    @ExcelProperty()
+    @ExcelProperty(value = "close")
     private BigDecimal close;
-    @ExcelProperty()
+    @ExcelProperty(value = "low")
     private BigDecimal low;
-    @ExcelProperty()
+    @ExcelProperty(value = "high")
     private BigDecimal high;
-    @ExcelProperty()
+    @ExcelProperty(value = "macd")
     private BigDecimal macd;
-    @ExcelProperty()
+    @ExcelProperty(value = "dif")
     private BigDecimal dif;
-    @ExcelProperty()
+    @ExcelProperty(value = "dea")
     private BigDecimal dea;
-    @ExcelProperty()
+    @ExcelProperty(value = "k")
     private BigDecimal k;
-    @ExcelProperty()
+    @ExcelProperty(value = "d")
     private BigDecimal d;
-    @ExcelProperty()
+    @ExcelProperty(value = "j")
     private BigDecimal j;
-    @ExcelProperty()
+    @ExcelProperty(value = "calcRsi9")
     private BigDecimal calcRsi9;
-    @ExcelProperty()
+    @ExcelProperty(value = "calcRsi12")
     private BigDecimal calcRsi12;
-    @ExcelProperty()
+    @ExcelProperty(value = "calcRsi14")
     private BigDecimal calcRsi14;
-    @ExcelProperty()
+    @ExcelProperty(value = "calcRsi72")
     private BigDecimal calcRsi72;
 
     private List<ReviewExport> lowerData;

@@ -25,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @SpringBootTest
 public class ReviewDataMockTests {
 
-        static String period = "15min";
+        static String period = "60min";
         static String currency = "xrpusdt";
         static String[] periods = { "1min", "5min", "15min", "60min", "4hour", "1day" };
 
@@ -58,7 +58,7 @@ public class ReviewDataMockTests {
         UnilateralMarket unilateralMarket = new UnilateralMarket();
         unilateralMarket.load4HourData(currency);
         Map<String, String> marketStatusMap = unilateralMarket.getMarketStatusMap();
-        listData = listData.subList(listData.size() - 50, listData.size() - 0);
+        listData = listData.subList(listData.size() - 100, listData.size() - 0);
         MergeDataUtil.mergeLowerData(listData, currency, period);
         // ReviewDataMock reviewDataMock = new ReviewDataMock(BigDecimal.valueOf(5), new ReviewDataMockMacd(), new ReviewDataMockRsi());
         // ReviewDataMock reviewDataMock = new ReviewDataMock(BigDecimal.valueOf(5), new ReviewDataMockMacd());
@@ -66,8 +66,8 @@ public class ReviewDataMockTests {
         // reviewDataMock.setSum(BigDecimal.valueOf(0.0042));
         // reviewDataMock.buildRepository(BigDecimal.valueOf(2.8));
         // reviewDataMock.setVolume(BigDecimal.valueOf(0.4));
-        reviewDataMock.setSum(BigDecimal.valueOf(180));
-        reviewDataMock.buildRepository(BigDecimal.valueOf(40));
+        reviewDataMock.setSum(BigDecimal.valueOf(144));
+        reviewDataMock.buildRepository(BigDecimal.valueOf(20));
         reviewDataMock.setVolume(BigDecimal.valueOf(5));
         reviewDataMock.printResultMock(marketStatusMap, listData);
         // 4 hour macd, macd > 0 only open long, macd < 0 only open short.
@@ -77,9 +77,9 @@ public class ReviewDataMockTests {
         // according to time point price, make price section to replace rsi highest and lowest.
         // level signal, judge open close signal.  e.g. macd three continual signal more than rsi highest and lowest.
         // multi indicator version, Identify the pros and cons of different versions
-        // Fast slow pointer, stop closer than 20 per cent, merge lower level data.
-        // Simulate the optimal currency. no hurry.
-        // Time period shift
+        // Fast slow pointer, stop closer than 20 per cent, merge lower level data. xx
+        // Simulate the optimal currency. no hurry. 
+        // Time period shift. x
         assertTrue(true);
     }
 }
