@@ -25,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @SpringBootTest
 public class ReviewDataMockTests {
 
-        static String period = "60min";
+        static String period = "15min";
         static String currency = "xrpusdt";
         static String[] periods = { "1min", "5min", "15min", "60min", "4hour", "1day" };
 
@@ -62,22 +62,22 @@ public class ReviewDataMockTests {
         MergeDataUtil.mergeLowerData(listData, currency, period);
         // ReviewDataMock reviewDataMock = new ReviewDataMock(BigDecimal.valueOf(5), new ReviewDataMockMacd(), new ReviewDataMockRsi());
         // ReviewDataMock reviewDataMock = new ReviewDataMock(BigDecimal.valueOf(5), new ReviewDataMockMacd());
-        ReviewDataMock reviewDataMock = new ReviewDataMock(BigDecimal.valueOf(50), new ReviewDataMockRsiSub());
+        ReviewDataMock reviewDataMock = new ReviewDataMock(BigDecimal.valueOf(5), new ReviewDataMockRsiSub());
         // reviewDataMock.setSum(BigDecimal.valueOf(0.0042));
         // reviewDataMock.buildRepository(BigDecimal.valueOf(2.8));
         // reviewDataMock.setVolume(BigDecimal.valueOf(0.4));
         reviewDataMock.setSum(BigDecimal.valueOf(144));
         reviewDataMock.buildRepository(BigDecimal.valueOf(20));
-        reviewDataMock.setVolume(BigDecimal.valueOf(5));
+        reviewDataMock.setVolume(BigDecimal.valueOf(3));
         reviewDataMock.printResultMock(marketStatusMap, listData);
-        // 4 hour macd, macd > 0 only open long, macd < 0 only open short.
-        // unilateral market, rsi indicator highest/lowest inoperative. how to judge unilateral market ?
-        // update excel data to calc 4 hour macd indicator, use for judge market status
-        // different market use for different indicator
-        // according to time point price, make price section to replace rsi highest and lowest.
-        // level signal, judge open close signal.  e.g. macd three continual signal more than rsi highest and lowest.
-        // multi indicator version, Identify the pros and cons of different versions
-        // Fast slow pointer, stop closer than 20 per cent, merge lower level data. xx
+        // 4 hour macd, macd > 0 only open long, macd < 0 only open short. y, not work
+        // unilateral market, rsi indicator highest/lowest inoperative. how to judge unilateral market ? y. only use rsi indicator and added judge of continuous boundary points
+        // update excel data to calc 4 hour macd indicator, use for judge market status. y. not use macd indicator.
+        // different market use for different indicator.  not work
+        // according to time point price, make price section to replace rsi highest and lowest. 
+        // level signal, judge open close signal.  e.g. macd three continual signal more than rsi highest and lowest. 
+        // multi indicator version, Identify the pros and cons of different versions. 
+        // Fast slow pointer, stop closer than 20 per cent, merge lower level data. y
         // Simulate the optimal currency. no hurry. 
         // Time period shift. x
         assertTrue(true);
