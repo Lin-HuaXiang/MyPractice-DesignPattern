@@ -43,3 +43,5 @@ design-pattern-visitor/target/
 design-pattern-index-analysis/target/
 *.iml
 spring-cloud-boot/.mvn/
+spring-cloud-dubbo-user-service/.mvn/
+spring-cloud-dubbo-user-provider/.mvn/

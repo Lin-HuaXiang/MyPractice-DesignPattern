@@ -1,6 +1,7 @@
 package com.example.designpatternspider;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -10,6 +11,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import com.alibaba.excel.EasyExcelFactory;
 import com.alibaba.excel.ExcelWriter;
@@ -23,6 +26,7 @@ import com.example.designpatternspider.selenium.huobi.util.excel.ReviewExportLis
 import com.example.designpatternspider.selenium.huobi.wss.event.MarketKLineReqResponse;
 import com.example.designpatternspider.selenium.huobi.wss.handle.WssMarketReqHandle;
 import com.example.designpatternspider.selenium.huobi.wss.request.KLineSubRequest;
+import com.example.designpatternspider.selenium.util.MacdIndicator;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,10 +42,10 @@ public class WssReviewDataTests {
 
     private String URL = "wss://www.btcgateway.pro/ws";
 
-    private String FILENAME = "market.BTC_CW.kline.1day";
+    private String FILENAME = "market.BTC_CW.kline.15min";
 
-    private static String fromDateString = "2021-2-1 00:00:00";
-    private static String toDateString = "2021-4-15 10:00:00";
+    private static String fromDateString = "2021-4-19 00:00:00";
+    private static String toDateString = "2021-4-19 13:15:00";
 
     private static Map<Long, ReviewExport> map = new ConcurrentHashMap<>();
 
@@ -76,6 +80,16 @@ public class WssReviewDataTests {
         Boolean bool = false;
         Collections.sort(list, (v1, v2) -> v1.getId().compareTo(v2.getId()));
         ReviewDataUtil.calcRSI(list, bool);
+
+        System.out.println(list.size());
+        List<BigDecimal> tempList = list.subList(list.size() - 120, list.size()).stream().map(ReviewExport::getPrice).collect(Collectors.toList());
+        Map<String, BigDecimal> macd = MacdIndicator.getMACD(tempList, 12, 26, 9);
+        System.out.println(tempList.size());
+        System.out.println(tempList.get(tempList.size() - 1));
+        System.out.println(tempList.get(tempList.size() - 2));
+        System.out.println(macd.get("DIF"));
+        System.out.println(macd.get("DEA"));
+        System.out.println(macd.get("MACD"));
         ExcelWriter build = EasyExcelFactory
                 .write(ReviewDataUtil.FIL_FUTURE_DATA + FILENAME + "-all.xlsx", ReviewExport.class).build();
         build.write(list, EasyExcelFactory.writerSheet(0, "sheet0").build());

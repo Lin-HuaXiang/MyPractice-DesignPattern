@@ -7,11 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * EMA（12）= 前一日EMA（12）×11/13＋今日收盘价×2/13
+ * EMA（12）= 前一日EMA（12）×11/13＋今日收盘价×2/13 
  * EMA（26）= 前一日EMA（26）×25/27＋今日收盘价×2/27
- * DIFF=今日EMA（12）- 今日EMA（26）
- * DEA（9）= 前一日DEA×8/10＋今日DIF×2/10 
- * BAR=2×(DIFF－DEA)
+ * DIFF=今日EMA（12）- 今日EMA（26） 
+ * DEA（9）= 前一日DEA×8/10＋今日DIF×2/10 BAR=2×(DIFF－DEA)
  */
 
 public class MacdIndicator {
@@ -34,6 +33,15 @@ public class MacdIndicator {
         return ema;
     }
 
+    public static final BigDecimal getEXPMA(BigDecimal price, BigDecimal ema, int number) {
+        // 开始计算EMA值，计算出序数
+        BigDecimal k = BigDecimal.valueOf(2).divide(BigDecimal.valueOf(number + 1), 4, RoundingMode.HALF_DOWN);
+        // 第一天ema等于当天收盘价
+        // 第二天以后，当天收盘 收盘价乘以系数再加上昨天EMA乘以系数-1
+        ema = price.multiply(k).add(ema.multiply(BigDecimal.ONE.subtract(k)));
+        return ema;
+    }
+
     /**
      * calculate MACD values
      *
@@ -44,8 +52,8 @@ public class MacdIndicator {
      * @param midPeriod   :the mid period value.
      * @return
      */
-    public static final HashMap<String, BigDecimal> getMACD(final List<BigDecimal> list,
-            final int shortPeriod, final int longPeriod, int midPeriod) {
+    public static final HashMap<String, BigDecimal> getMACD(final List<BigDecimal> list, final int shortPeriod,
+            final int longPeriod, int midPeriod) {
         HashMap<String, BigDecimal> macdData = new HashMap<>();
         List<BigDecimal> diffList = new ArrayList<>();
         BigDecimal shortEMA = BigDecimal.ZERO;
@@ -66,5 +74,30 @@ public class MacdIndicator {
         macdData.put("MACD", dif.subtract(dea).setScale(4, RoundingMode.HALF_DOWN));
         return macdData;
     }
+
+    public static final HashMap<String, BigDecimal> getMACD(BigDecimal price, BigDecimal ema, int shortPeriod,
+            int longPeriod, int midPeriod) {
+        HashMap<String, BigDecimal> macdData = new HashMap<>();
+
+        BigDecimal shortEMA = getEXPMA(price, ema, shortPeriod);
+        BigDecimal longEMA = getEXPMA(price, ema, longPeriod);
+        BigDecimal dif = shortEMA.subtract(longEMA);
+        
+        BigDecimal dea = getEXPMA(dif, ema, midPeriod);
+        macdData.put("DIF", dif.setScale(4, RoundingMode.HALF_DOWN));
+        macdData.put("DEA", dea.setScale(4, RoundingMode.HALF_DOWN));
+        macdData.put("MACD", dif.subtract(dea).setScale(4, RoundingMode.HALF_DOWN));
+        return macdData;
+    }
+
+    public static void main(String[] args) {
+        BigDecimal price = new BigDecimal("");
+        BigDecimal ema = new BigDecimal("");
+        HashMap<String, BigDecimal> macd = getMACD(price, ema, 12, 26, 9);
+        System.out.println(macd.get("DIF"));
+        System.out.println(macd.get("DEA"));
+        System.out.println(macd.get("MACD"));
+    }
+
 
 }
