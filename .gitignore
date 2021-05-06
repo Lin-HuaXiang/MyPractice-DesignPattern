@@ -45,3 +45,4 @@ design-pattern-index-analysis/target/
 spring-cloud-boot/.mvn/
 spring-cloud-dubbo-user-service/.mvn/
 spring-cloud-dubbo-user-provider/.mvn/
+design-pattern-snap/.mvn/
