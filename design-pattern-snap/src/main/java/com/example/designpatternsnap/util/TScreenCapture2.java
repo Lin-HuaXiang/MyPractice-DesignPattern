@@ -9,10 +9,12 @@ import javax.imageio.ImageIO;
 
 import net.sourceforge.tess4j.ITesseract;
 import net.sourceforge.tess4j.Tesseract;
+import net.sourceforge.tess4j.TesseractException;
 
 public class TScreenCapture2 {
 
-    public static void main(String[] args) throws Exception {
+    
+    public static void main2(String[] args) throws Exception {
         Robot robot = new Robot();
         // BufferedImage fullScreenImage = robot
         //         .createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
@@ -45,6 +47,21 @@ public class TScreenCapture2 {
          // 输出识别结果
          long endTime = System.currentTimeMillis();
          System.out.println("识别结果: \n" + result + "\n 耗时：" + (endTime - startTime) + "ms");
+    }
+
+    public static void main(String[] args) throws TesseractException {
+        String path=System.getProperty("user.dir");
+        //加载待读取图片
+        File imageFile = new File("D:\\gihubproject\\MyPractice-DesignPattern\\img\\tmp\\8.jpg");
+        //创建tess对象
+        ITesseract instance = new Tesseract();
+        //设置训练文件目录
+        instance.setDatapath(path + "/design-pattern-snap/tessdata");
+        //设置训练语言
+        instance.setLanguage("eng");
+        //执行转换
+        String result = instance.doOCR(imageFile);  
+        System.out.println(result);      
     }
 
 }
