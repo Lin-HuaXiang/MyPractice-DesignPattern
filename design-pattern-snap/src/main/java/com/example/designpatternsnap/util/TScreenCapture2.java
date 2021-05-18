@@ -14,6 +14,10 @@ import net.sourceforge.tess4j.ITesseract;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
 
+/**
+ * https://www.cnblogs.com/cnlian/p/5765871.html
+ */
+
 public class TScreenCapture2 {
 
     
@@ -55,18 +59,18 @@ public class TScreenCapture2 {
     public static void main(String[] args) throws TesseractException, IOException {
         String path=System.getProperty("user.dir");
         //加载待读取图片
-        File imageFile = new File("D:\\gihubproject\\MyPractice-DesignPattern\\img\\1.jpg");
-        File cleanImage = ClearImageHelper.cleanImage(imageFile);  
+        File imageFile = new File("D:\\gihubproject\\MyPractice-DesignPattern\\img\\sample\\tmp\\Dingtalk_20210518142345.jpg");
+        // File cleanImage = ClearImageHelper.cleanImage(imageFile);  
         //创建tess对象
         ITesseract instance = new Tesseract();
         //设置训练文件目录
         instance.setOcrEngineMode(0);
-        instance.setDatapath("C:/tess4j/tessdata");
+        instance.setDatapath("D:\\gihubproject\\MyPractice-DesignPattern\\img\\sample\\tmp");
         //设置训练语言
-        instance.setLanguage("eng");
+        instance.setLanguage("num");
         //执行转换
-        String result = instance.doOCR(cleanImage);  
-        cleanImage.delete();
+        String result = instance.doOCR(imageFile);  
+        // cleanImage.delete();
         System.out.println(result);      
     }
 

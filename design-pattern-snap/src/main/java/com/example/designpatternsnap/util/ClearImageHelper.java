@@ -13,14 +13,80 @@ public class ClearImageHelper {
     {  
   
           
-        // File testDataDir = new File(System.getProperty("user.dir") + "/img");  
-        // final String destDir = testDataDir.getAbsolutePath()+"/tmp";  
-        // for (File file : testDataDir.listFiles())  
-        // {  
-        //     cleanImage(file, destDir);  
-        // }  
+        File testDataDir = new File("D:\\gihubproject\\MyPractice-DesignPattern\\img\\sample");  
+        final String destDir = testDataDir.getAbsolutePath()+"/tmp";  
+        for (File file : testDataDir.listFiles())  
+        {  
+            cleanImage(file, destDir);  
+        }  
   
     }  
+
+    public static void cleanImage(File sfile, String destDir)
+            throws IOException {
+        File destF = new File(destDir);
+        if (!destF.exists()) {
+            destF.mkdirs();
+        }
+
+        BufferedImage bufferedImage = ImageIO.read(sfile);
+        int h = bufferedImage.getHeight();
+        int w = bufferedImage.getWidth();
+
+        // 灰度化
+        int[][] gray = new int[w][h];
+        for (int x = 0; x < w; x++) {
+            for (int y = 0; y < h; y++) {
+                int argb = bufferedImage.getRGB(x, y);
+                // 图像加亮（调整亮度识别率非常高）
+                int r = (int) (((argb >> 16) & 0xFF) * 1.1 + 30);
+                int g = (int) (((argb >> 8) & 0xFF) * 1.1 + 30);
+                int b = (int) (((argb >> 0) & 0xFF) * 1.1 + 30);
+                if (r >= 255) {
+                    r = 255;
+                }
+                if (g >= 255) {
+                    g = 255;
+                }
+                if (b >= 255) {
+                    b = 255;
+                }
+                gray[x][y] = (int) Math
+                        .pow((Math.pow(r, 2.2) * 0.2973 + Math.pow(g, 2.2)
+                                * 0.6274 + Math.pow(b, 2.2) * 0.0753), 1 / 2.2);
+            }
+        }
+
+        // 二值化
+        int threshold = ostu(gray, w, h);
+        BufferedImage binaryBufferedImage = new BufferedImage(w, h,
+                BufferedImage.TYPE_BYTE_BINARY);
+        for (int x = 0; x < w; x++) {
+            for (int y = 0; y < h; y++) {
+                if (gray[x][y] > threshold) {
+                    gray[x][y] |= 0x00FFFF;
+                } else {
+                    gray[x][y] &= 0xFF0000;
+                }
+                binaryBufferedImage.setRGB(x, y, gray[x][y]);
+            }
+        }
+
+        // 矩阵打印
+        for (int y = 0; y < h; y++) {
+            for (int x = 0; x < w; x++) {
+                if (isBlack(binaryBufferedImage.getRGB(x, y))) {
+                    System.out.print("*");
+                } else {
+                    System.out.print(" ");
+                }
+            }
+            System.out.println();
+        }
+
+        ImageIO.write(binaryBufferedImage, "jpg", new File(destDir, sfile
+                .getName()));
+    }
   
     /** 
      *  
@@ -101,9 +167,10 @@ public class ClearImageHelper {
             }  
             System.out.println();  
         }  
+  
         File createTempFile = File.createTempFile("temp", System.currentTimeMillis() + ".jpg");
         ImageIO.write(binaryBufferedImage, "jpg", createTempFile);  
-        return createTempFile;    
+        return createTempFile;   
     }  
   
     public static boolean isBlack(int colorInt)  
@@ -196,4 +263,52 @@ public class ClearImageHelper {
   
         return threshold;  
     }  
+
+
+    public static File getImg(File read) throws IOException {
+		BufferedImage image = ImageIO.read(read);
+		int w = image.getWidth();
+		int h = image.getHeight();
+		float[] rgb = new float[3];
+		double[][] zuobiao = new double[w][h];
+		int R = 0;
+		float red = 0;
+		float green = 0;
+		float blue = 0;
+		BufferedImage bi= new BufferedImage(w, h, BufferedImage.TYPE_BYTE_BINARY);
+		;
+		for (int x = 0; x < w; x++) {
+			for (int y = 0; y < h; y++) {
+				int pixel = image.getRGB(x, y);
+				rgb[0] = (pixel & 0xff0000) >> 16;
+				rgb[1] = (pixel & 0xff00) >> 8;
+				rgb[2] = (pixel & 0xff);
+				red += rgb[0];
+				green += rgb[1];
+				blue += rgb[2];
+				R = (x+1) *(y+1);
+				float avg = (rgb[0]+rgb[1]+rgb[2])/3;
+				zuobiao[x][y] = avg;
+ 
+			}
+		}
+		double SW = 170;
+		for (int x = 0; x < w; x++) {
+			for (int y = 0; y < h; y++) {
+				if (zuobiao[x][y] <= SW) {
+					int max = new Color(0, 0, 0).getRGB();
+					bi.setRGB(x, y, max);
+				}else{
+					int min = new Color(255, 255, 255).getRGB();
+					bi.setRGB(x, y, min);
+				}
+			}
+		}
+ 
+		File createTempFile = File.createTempFile("temp", System.currentTimeMillis() + ".jpg");
+        ImageIO.write(bi, "jpg", createTempFile);  
+        return createTempFile;
+	}
+
 }
+
