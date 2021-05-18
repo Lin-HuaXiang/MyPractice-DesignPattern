@@ -13,12 +13,12 @@ public class ClearImageHelper {
     {  
   
           
-        File testDataDir = new File(System.getProperty("user.dir") + "/img");  
-        final String destDir = testDataDir.getAbsolutePath()+"/tmp";  
-        for (File file : testDataDir.listFiles())  
-        {  
-            cleanImage(file, destDir);  
-        }  
+        // File testDataDir = new File(System.getProperty("user.dir") + "/img");  
+        // final String destDir = testDataDir.getAbsolutePath()+"/tmp";  
+        // for (File file : testDataDir.listFiles())  
+        // {  
+        //     cleanImage(file, destDir);  
+        // }  
   
     }  
   
@@ -30,14 +30,9 @@ public class ClearImageHelper {
      *            去噪后的图像保存地址 
      * @throws IOException 
      */  
-    public static void cleanImage(File sfile, String destDir)  
+    public static File cleanImage(File sfile)  
             throws IOException  
     {  
-        File destF = new File(destDir);  
-        if (!destF.exists())  
-        {  
-            destF.mkdirs();  
-        }  
   
         BufferedImage bufferedImage = ImageIO.read(sfile);  
         int h = bufferedImage.getHeight();  
@@ -106,9 +101,9 @@ public class ClearImageHelper {
             }  
             System.out.println();  
         }  
-  
-        ImageIO.write(binaryBufferedImage, "jpg", new File(destDir, sfile  
-                .getName()));  
+        File createTempFile = File.createTempFile("temp", System.currentTimeMillis() + ".jpg");
+        ImageIO.write(binaryBufferedImage, "jpg", createTempFile);  
+        return createTempFile;    
     }  
   
     public static boolean isBlack(int colorInt)  

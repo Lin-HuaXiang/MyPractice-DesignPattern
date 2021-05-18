@@ -4,6 +4,9 @@ import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+
+import com.example.designpatternsnap.util.ClearImageHelper;
 
 import javax.imageio.ImageIO;
 
@@ -49,18 +52,21 @@ public class TScreenCapture2 {
          System.out.println("识别结果: \n" + result + "\n 耗时：" + (endTime - startTime) + "ms");
     }
 
-    public static void main(String[] args) throws TesseractException {
+    public static void main(String[] args) throws TesseractException, IOException {
         String path=System.getProperty("user.dir");
         //加载待读取图片
-        File imageFile = new File("D:\\gihubproject\\MyPractice-DesignPattern\\img\\tmp\\8.jpg");
+        File imageFile = new File("D:\\gihubproject\\MyPractice-DesignPattern\\img\\1.jpg");
+        File cleanImage = ClearImageHelper.cleanImage(imageFile);  
         //创建tess对象
         ITesseract instance = new Tesseract();
         //设置训练文件目录
-        instance.setDatapath(path + "/design-pattern-snap/tessdata");
+        instance.setOcrEngineMode(0);
+        instance.setDatapath("C:/tess4j/tessdata");
         //设置训练语言
         instance.setLanguage("eng");
         //执行转换
-        String result = instance.doOCR(imageFile);  
+        String result = instance.doOCR(cleanImage);  
+        cleanImage.delete();
         System.out.println(result);      
     }
 
